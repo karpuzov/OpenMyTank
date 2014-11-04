@@ -26,3 +26,18 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio specific
+*.ipch
+Debug
+Release
+*.vcxproj.filters
+*.vcxproj.user
+*.cfg
+*.sdf
+*.opensdf
+*.suo
+
+# Eclipse specific
+.project
+.cproject
