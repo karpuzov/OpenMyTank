@@ -12,6 +12,7 @@
 #include "web_browser.h"
 #include "account.h"
 #include "clicker_thread.h"
+#include "autoupdating.h"
 
 #include <windows.h>
 #include <Windowsx.h>
@@ -184,6 +185,8 @@ int APIENTRY _tWinMain(HINSTANCE instance,
                        int       /*nCmdShow*/)
 {
   Instance = instance;
+
+  ForAutoupdate();
 
   BattleUrl.reset(new TO::UrlManager(commandLine));
   WindowTitle = new Gui::WindowTitle(commandLine);
