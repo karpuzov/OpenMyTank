@@ -1,0 +1,512 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ID_GENERAL_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Общее"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Частота кликанья: ",IDC_STATIC,7,7,242,56
+    EDITTEXT        IDC_CLICKERS_DELAY_EDIT,124,24,100,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Периодичность кликов, мс:",IDC_STATIC,19,24,96,14,SS_CENTERIMAGE
+    GROUPBOX        " Язык серверов битв: ",IDC_STATIC,7,67,242,65
+    CONTROL         "Английский",IDC_ENGLISH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,180,10
+    CONTROL         "Немецкий",IDC_GERMAN,"Button",BS_AUTORADIOBUTTON,18,99,180,10
+    CONTROL         "Русский",IDC_RUSSIAN,"Button",BS_AUTORADIOBUTTON,18,114,180,10
+    LTEXT           "Допустимый диапазон: [1; 999] мс",IDC_STATIC,19,43,121,8
+END
+
+ID_SCREENSHOT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Скриншот"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Папка для скриншотов: ",IDC_STATIC,7,7,242,57
+    EDITTEXT        IDC_PATH_EDIT,17,22,222,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Выбрать",IDC_PATH_BUTTON,17,40,50,14
+    GROUPBOX        " Формат имени файла: ",IDC_STATIC,7,67,242,50
+    CONTROL         "ДД.ММ.ГГГГ чч-мм-сс",IDC_DD_MM_YYYY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,220,10
+    CONTROL         "ГГГГ-ММ-ДД чч-мм-сс",IDC_YYYY_MM_DD,"Button",BS_AUTORADIOBUTTON,18,98,220,10
+    GROUPBOX        " Формат изображения: ",IDC_STATIC,7,120,242,62
+    CONTROL         "Jpeg",IDC_JPEG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,135,40,10
+    CONTROL         "Png",IDC_PNG,"Button",BS_AUTORADIOBUTTON,18,150,40,10
+    CONTROL         "Bmp",IDC_BMP,"Button",BS_AUTORADIOBUTTON,18,165,40,10
+    LTEXT           "Качество (0 - 100):",IDC_STATIC,63,133,66,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_QUALITY_EDIT,136,133,40,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Издавать звук при успешном создании скриншота",IDC_BEEP_CHECKBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,188,200,10
+END
+
+ID_INTERFACE_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Интерфейс"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Клавиша для создания скриншота: ",IDC_STATIC,7,7,242,64
+    CONTROL         "PrtSc / SysRq",IDC_KEY_PRTSC,"Button",BS_AUTORADIOBUTTON,17,23,221,10
+    CONTROL         "~ / `",IDC_KEY_TILDE,"Button",BS_AUTORADIOBUTTON,17,38,221,10
+    CONTROL         "Esc",IDC_KEY_ESC,"Button",BS_AUTORADIOBUTTON,17,53,221,10
+    GROUPBOX        " Игровые сервера: ",IDC_STATIC,7,75,242,39
+    LTEXT           "Количество кнопок:",IDC_STATIC,17,89,70,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_SERVERBUTTONS_EDIT,97,89,52,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+ID_CHAT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Боевой чат"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Сообщения для отправки в боевой чат: ",IDC_STATIC,7,7,242,193
+    CTEXT           "Клавиша",IDC_STATIC,9,19,36,8
+    CTEXT           "Текст сообщения",IDC_STATIC,46,19,163,8
+    CTEXT           "[Team]",IDC_STATIC,213,19,24,8
+    CTEXT           "F1",IDC_STATIC,9,33,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT1,46,33,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,33,12,14
+    CTEXT           "F2",IDC_STATIC,9,49,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT2,46,49,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,49,12,14
+    CTEXT           "F3",IDC_STATIC,9,65,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT3,46,65,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,65,12,14
+    CTEXT           "F4",IDC_STATIC,9,81,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT4,46,81,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,81,12,14
+    CTEXT           "F5",IDC_STATIC,9,97,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT5,46,97,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,97,12,14
+    CTEXT           "F6",IDC_STATIC,9,113,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT6,46,113,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,113,12,14
+    CTEXT           "F7",IDC_STATIC,9,129,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT7,46,129,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,129,12,14
+    CTEXT           "F8",IDC_STATIC,9,145,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT8,46,145,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,145,12,14
+    CTEXT           "F9",IDC_STATIC,9,161,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT9,46,161,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,161,12,14
+    CTEXT           "F10",IDC_STATIC,9,177,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT10,46,177,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,177,12,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+
+    ID_GENERAL_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_SCREENSHOT_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_INTERFACE_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_CHAT_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_BEEPWAVE            WAVE                    "click.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_LANGUAGE            "ru"
+    IDS_VERSION             "Версия %s от %s"
+    IDS_SETTINGS_TITLE      "Настройки OpenMyTank"
+    IDS_SETTINGS_BUTTON     "Изменить настройки"
+    IDS_LEFT_CLICKER_BUTTON "Кликать Слева"
+    IDS_RIGHT_CLICKER_BUTTON "Кликать Справа"
+    IDS_GET_URL_BUTTON      "Взять Url"
+    IDS_OPEN_URL_BUTTON     "Открыть Url"
+    IDS_CLICKING_BUTTON     "Кликаю..."
+    IDS_SCREENSHOT_PATH     "Выберите папку для скриншотов:"
+    IDS_SCREENSHOT_DIR      "Скриншоты из OpenMyTank"
+    IDS_NEWS                "OpenMyTank - специальный быстрый клиент для онлайн игры TankiOnline.com\nOpenMyTank - opensource версия MyTank, которая не может считаться вредоносным и запрещенным ПО"
+    IDS_F1_MESSAGE          "База"
+    IDS_F2_MESSAGE          "Лево"
+    IDS_F3_MESSAGE          "Центр"
+    IDS_F4_MESSAGE          "Право"
+    IDS_F5_MESSAGE          "Отбой"
+    IDS_F6_MESSAGE          "Прикройте Слева"
+    IDS_F7_MESSAGE          "Прикройте Центр"
+    IDS_F8_MESSAGE          "Прикройте Справа"
+    IDS_F9_MESSAGE          "Переоденусь и вернусь"
+    IDS_F10_MESSAGE         "Я с пола подобрал!"
+    IDS_HELP_PAGE_BUTTON    "Онлайн Справка"
+    IDS_BATTLE_IS_LOADED    "Битва загружена!"
+    IDS_LINGUALEO           "Source code on GitHub: github.com/karpuzov/OpenMyTank"
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Neutral) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_LANGUAGE            "de"
+    IDS_VERSION             "Version %s by %s"
+    IDS_SETTINGS_TITLE      "OpenMyTank settings"
+    IDS_SETTINGS_BUTTON     "Change settings"
+    IDS_LEFT_CLICKER_BUTTON "Click Left"
+    IDS_RIGHT_CLICKER_BUTTON "Click Right"
+    IDS_GET_URL_BUTTON      "Get Url"
+    IDS_OPEN_URL_BUTTON     "Open Url"
+    IDS_CLICKING_BUTTON     "Clicking..."
+    IDS_SCREENSHOT_PATH     "Select directory for screenshots:"
+    IDS_SCREENSHOT_DIR      "OpenMyTank Screenshots"
+    IDS_NEWS                "OpenMyTank - special fast client for online game TankiOnline.com\nOpenMyTank - opensource version of MyTank"
+    IDS_F1_MESSAGE          "Base"
+    IDS_F2_MESSAGE          "Left"
+    IDS_F3_MESSAGE          "Center"
+    IDS_F4_MESSAGE          "Right"
+    IDS_F5_MESSAGE          "Clear"
+    IDS_F6_MESSAGE          "Cover Left"
+    IDS_F7_MESSAGE          "Cover Center"
+    IDS_F8_MESSAGE          "Cover Right"
+    IDS_F9_MESSAGE          "I Change weapons and Lost"
+    IDS_F10_MESSAGE         "It is not drugs!"
+    IDS_HELP_PAGE_BUTTON    "Online Help"
+    IDS_BATTLE_IS_LOADED    "Battle is loaded!"
+    IDS_LINGUALEO           "Source code on GitHub: github.com/karpuzov/OpenMyTank"
+END
+
+#endif    // German (Neutral) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Neutral) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ID_GENERAL_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Clicking frequency: ",IDC_STATIC,7,7,242,56
+    EDITTEXT        IDC_CLICKERS_DELAY_EDIT,87,24,122,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Clicks period, ms:",IDC_STATIC,19,24,56,14,SS_CENTERIMAGE
+    GROUPBOX        " Battle servers language: ",IDC_STATIC,7,67,242,65
+    CONTROL         "English",IDC_ENGLISH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,180,10
+    CONTROL         "German",IDC_GERMAN,"Button",BS_AUTORADIOBUTTON,18,99,180,10
+    CONTROL         "Russian",IDC_RUSSIAN,"Button",BS_AUTORADIOBUTTON,18,114,180,10
+    LTEXT           "Available values: [1; 999] ms",IDC_STATIC,19,43,121,8
+END
+
+ID_SCREENSHOT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Screenshot"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Directory with screenshotes: ",IDC_STATIC,7,7,242,57
+    EDITTEXT        IDC_PATH_EDIT,17,22,222,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse",IDC_PATH_BUTTON,17,40,50,14
+    GROUPBOX        " Filename format: ",IDC_STATIC,7,67,242,50
+    CONTROL         "DD.MM.YYYY hh-mm-ss",IDC_DD_MM_YYYY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,220,10
+    CONTROL         "YYYY-MM-DD hh-mm-ss",IDC_YYYY_MM_DD,"Button",BS_AUTORADIOBUTTON,18,98,220,10
+    GROUPBOX        " Image format: ",IDC_STATIC,7,120,242,62
+    CONTROL         "Jpeg",IDC_JPEG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,135,40,10
+    CONTROL         "Png",IDC_PNG,"Button",BS_AUTORADIOBUTTON,18,150,40,10
+    CONTROL         "Bmp",IDC_BMP,"Button",BS_AUTORADIOBUTTON,18,165,40,10
+    LTEXT           "Quality (0 - 100):",IDC_STATIC,63,133,56,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_QUALITY_EDIT,126,133,40,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Beep on success screenshot saving",IDC_BEEP_CHECKBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,188,200,10
+END
+
+ID_INTERFACE_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Interface"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Key for making screenshot: ",IDC_STATIC,7,7,242,64
+    CONTROL         "PrtSc / SysRq",IDC_KEY_PRTSC,"Button",BS_AUTORADIOBUTTON,17,23,221,10
+    CONTROL         "~ / `",IDC_KEY_TILDE,"Button",BS_AUTORADIOBUTTON,17,38,221,10
+    CONTROL         "Esc",IDC_KEY_ESC,"Button",BS_AUTORADIOBUTTON,17,53,221,10
+    GROUPBOX        " Battle servers: ",IDC_STATIC,7,75,242,39
+    LTEXT           "Buttons quantity:",IDC_STATIC,17,89,70,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_SERVERBUTTONS_EDIT,97,89,52,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+ID_CHAT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Battle chat"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        " Messages for sending to chat: ",IDC_STATIC,7,7,242,193
+    CTEXT           "Key",IDC_STATIC,9,19,36,8
+    CTEXT           "Message text",IDC_STATIC,46,19,163,8
+    CTEXT           "[Team]",IDC_STATIC,213,19,24,8
+    CTEXT           "F1",IDC_STATIC,9,33,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT1,46,33,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,33,12,14
+    CTEXT           "F2",IDC_STATIC,9,49,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT2,46,49,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,49,12,14
+    CTEXT           "F3",IDC_STATIC,9,65,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT3,46,65,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,65,12,14
+    CTEXT           "F4",IDC_STATIC,9,81,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT4,46,81,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,81,12,14
+    CTEXT           "F5",IDC_STATIC,9,97,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT5,46,97,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,97,12,14
+    CTEXT           "F6",IDC_STATIC,9,113,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT6,46,113,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,113,12,14
+    CTEXT           "F7",IDC_STATIC,9,129,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT7,46,129,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,129,12,14
+    CTEXT           "F8",IDC_STATIC,9,145,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT8,46,145,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,145,12,14
+    CTEXT           "F9",IDC_STATIC,9,161,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT9,46,161,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,161,12,14
+    CTEXT           "F10",IDC_STATIC,9,177,36,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CHAT_EDIT10,46,177,163,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHAT_CHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,222,177,12,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+
+    ID_GENERAL_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_SCREENSHOT_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_INTERFACE_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    ID_CHAT_SETTINGS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_FAVICON             ICON                    "favicon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_LANGUAGE            "en"
+    IDS_VERSION             "Version %s by %s"
+    IDS_SETTINGS_TITLE      "OpenMyTank settings"
+    IDS_SETTINGS_BUTTON     "Change settings"
+    IDS_LEFT_CLICKER_BUTTON "Click Left"
+    IDS_RIGHT_CLICKER_BUTTON "Click Right"
+    IDS_GET_URL_BUTTON      "Get Url"
+    IDS_OPEN_URL_BUTTON     "Open Url"
+    IDS_CLICKING_BUTTON     "Clicking..."
+    IDS_SCREENSHOT_PATH     "Select directory for screenshots:"
+    IDS_SCREENSHOT_DIR      "OpenMyTank Screenshots"
+    IDS_NEWS                "OpenMyTank - special fast client for online game TankiOnline.com\nOpenMyTank - opensource version of MyTank"
+    IDS_F1_MESSAGE          "Base"
+    IDS_F2_MESSAGE          "Left"
+    IDS_F3_MESSAGE          "Center"
+    IDS_F4_MESSAGE          "Right"
+    IDS_F5_MESSAGE          "Clear"
+    IDS_F6_MESSAGE          "Cover Left"
+    IDS_F7_MESSAGE          "Cover Center"
+    IDS_F8_MESSAGE          "Cover Right"
+    IDS_F9_MESSAGE          "I Change weapons and Lost"
+    IDS_F10_MESSAGE         "It is not drugs!"
+    IDS_HELP_PAGE_BUTTON    "Online Help"
+    IDS_BATTLE_IS_LOADED    "Battle is loaded!"
+    IDS_LINGUALEO           "Source code on GitHub: github.com/karpuzov/OpenMyTank"
+END
+
+#endif    // English (Neutral) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
