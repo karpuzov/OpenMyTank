@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#include "account.h"
-#include "tanki_online.h"
+#include "Account.h"
+#include "TankiOnline.h"
 
 #include <windows.h>
 #include <Shlwapi.h>

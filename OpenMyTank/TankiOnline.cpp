@@ -1,9 +1,9 @@
 //-----------------------------------------------------------------------------
 
-#include "tanki_online.h"
-#include "options.h"
-#include "settings.h"
-#include "account.h"
+#include "TankiOnline.h"
+#include "Options.h"
+#include "Settings.h"
+#include "Account.h"
 
 #include <cctype>
 #include <cassert>

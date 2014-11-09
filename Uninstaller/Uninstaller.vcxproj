@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="unistaller.cpp" />
+    <ClCompile Include="Unistaller.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5D98390F-C212-4BEF-8265-677493DBB278}</ProjectGuid>

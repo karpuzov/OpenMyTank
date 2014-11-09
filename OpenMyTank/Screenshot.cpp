@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 
-#include "screenshot.h"
-#include "settings.h"
-#include "resource.h"
+#include "Screenshot.h"
+#include "Settings.h"
+#include "Resource.h"
 
 #include <gdiplus.h>
 #include <Shlwapi.h>

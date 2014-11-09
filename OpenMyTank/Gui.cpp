@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include "gui.h"
+#include "Gui.h"
 
 #include <sstream>
 #include <cassert>

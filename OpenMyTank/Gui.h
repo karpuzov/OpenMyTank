@@ -4,10 +4,10 @@
 
 //-----------------------------------------------------------------------------
 
-#include "options.h"
+#include "Options.h"
 #include "tstring.h"
-#include "settings.h"
-#include "resource.h"
+#include "Settings.h"
+#include "Resource.h"
 
 #include <windows.h>
 #include <Shellapi.h>

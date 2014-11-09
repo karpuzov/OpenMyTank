@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include "tstring.h"
-#include "resource.h"
+#include "Resource.h"
 
 #include <windows.h>
 

@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------
 
-#include "resource.h"
+#include "Resource.h"
 #include "tstring.h"
-#include "settings.h"
-#include "hwnd_utils.h"
-#include "file_utils.h"
+#include "Settings.h"
+#include "HwndUtils.h"
+#include "FileUtils.h"
 
 #include <windows.h>
 #include <Windowsx.h>

@@ -11,42 +11,42 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="account.cpp" />
-    <ClCompile Include="chat_writer.cpp" />
-    <ClCompile Include="file_utils.cpp" />
-    <ClCompile Include="flash.cpp" />
-    <ClCompile Include="gui.cpp" />
-    <ClCompile Include="hooks.cpp" />
+    <ClCompile Include="Account.cpp" />
+    <ClCompile Include="ChatWriter.cpp" />
+    <ClCompile Include="FileUtils.cpp" />
+    <ClCompile Include="Flash.cpp" />
+    <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="screenshot.cpp" />
-    <ClCompile Include="settings.cpp" />
-    <ClCompile Include="tanki_online.cpp" />
-    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="Screenshot.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="TankiOnline.cpp" />
+    <ClCompile Include="Thread.cpp" />
     <ClCompile Include="tstring.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="account.h" />
-    <ClInclude Include="autoupdating.h" />
-    <ClInclude Include="chat_writer.h" />
-    <ClInclude Include="clicker_thread.h" />
-    <ClInclude Include="clipboard_manager.h" />
-    <ClInclude Include="file_utils.h" />
-    <ClInclude Include="flash.h" />
-    <ClInclude Include="gui.h" />
-    <ClInclude Include="hooks.h" />
-    <ClInclude Include="hwnd_utils.h" />
-    <ClInclude Include="options.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="screenshot.h" />
-    <ClInclude Include="settings.h" />
-    <ClInclude Include="tanki_online.h" />
+    <ClInclude Include="Account.h" />
+    <ClInclude Include="AutoUpdating.h" />
+    <ClInclude Include="ChatWriter.h" />
+    <ClInclude Include="ClickerThread.h" />
+    <ClInclude Include="ClipboardManager.h" />
+    <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="Flash.h" />
+    <ClInclude Include="Gui.h" />
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="HwndUtils.h" />
+    <ClInclude Include="Options.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Screenshot.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="TankiOnline.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="thread.h" />
+    <ClInclude Include="Thread.h" />
     <ClInclude Include="tstring.h" />
-    <ClInclude Include="web_browser.h" />
+    <ClInclude Include="WebBrowser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="my_tank.rc" />
+    <ResourceCompile Include="OpenMyTank.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EBF51026-8C88-4352-91B4-2CAC2D837292}</ProjectGuid>

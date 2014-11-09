@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "resource.h"
+#include "Resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -33,62 +33,62 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 
 ID_GENERAL_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Общее"
+CAPTION "пїЅпїЅпїЅпїЅпїЅ"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    GROUPBOX        " Частота кликанья: ",IDC_STATIC,7,7,242,56
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,7,242,56
     EDITTEXT        IDC_CLICKERS_DELAY_EDIT,124,24,100,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Периодичность кликов, мс:",IDC_STATIC,19,24,96,14,SS_CENTERIMAGE
-    GROUPBOX        " Язык серверов битв: ",IDC_STATIC,7,67,242,65
-    CONTROL         "Английский",IDC_ENGLISH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,180,10
-    CONTROL         "Немецкий",IDC_GERMAN,"Button",BS_AUTORADIOBUTTON,18,99,180,10
-    CONTROL         "Русский",IDC_RUSSIAN,"Button",BS_AUTORADIOBUTTON,18,114,180,10
-    LTEXT           "Допустимый диапазон: [1; 999] мс",IDC_STATIC,19,43,121,8
+    LTEXT           "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ:",IDC_STATIC,19,24,96,14,SS_CENTERIMAGE
+    GROUPBOX        " пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,67,242,65
+    CONTROL         "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_ENGLISH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,180,10
+    CONTROL         "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_GERMAN,"Button",BS_AUTORADIOBUTTON,18,99,180,10
+    CONTROL         "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_RUSSIAN,"Button",BS_AUTORADIOBUTTON,18,114,180,10
+    LTEXT           "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: [1; 999] пїЅпїЅ",IDC_STATIC,19,43,121,8
 END
 
 ID_SCREENSHOT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Скриншот"
+CAPTION "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    GROUPBOX        " Папка для скриншотов: ",IDC_STATIC,7,7,242,57
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,7,242,57
     EDITTEXT        IDC_PATH_EDIT,17,22,222,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Выбрать",IDC_PATH_BUTTON,17,40,50,14
-    GROUPBOX        " Формат имени файла: ",IDC_STATIC,7,67,242,50
-    CONTROL         "ДД.ММ.ГГГГ чч-мм-сс",IDC_DD_MM_YYYY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,220,10
-    CONTROL         "ГГГГ-ММ-ДД чч-мм-сс",IDC_YYYY_MM_DD,"Button",BS_AUTORADIOBUTTON,18,98,220,10
-    GROUPBOX        " Формат изображения: ",IDC_STATIC,7,120,242,62
+    PUSHBUTTON      "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_PATH_BUTTON,17,40,50,14
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,67,242,50
+    CONTROL         "пїЅпїЅ.пїЅпїЅ.пїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅ-пїЅпїЅ",IDC_DD_MM_YYYY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,220,10
+    CONTROL         "пїЅпїЅпїЅпїЅ-пїЅпїЅ-пїЅпїЅ пїЅпїЅ-пїЅпїЅ-пїЅпїЅ",IDC_YYYY_MM_DD,"Button",BS_AUTORADIOBUTTON,18,98,220,10
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,120,242,62
     CONTROL         "Jpeg",IDC_JPEG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,135,40,10
     CONTROL         "Png",IDC_PNG,"Button",BS_AUTORADIOBUTTON,18,150,40,10
     CONTROL         "Bmp",IDC_BMP,"Button",BS_AUTORADIOBUTTON,18,165,40,10
-    LTEXT           "Качество (0 - 100):",IDC_STATIC,63,133,66,13,SS_CENTERIMAGE
+    LTEXT           "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (0 - 100):",IDC_STATIC,63,133,66,13,SS_CENTERIMAGE
     EDITTEXT        IDC_QUALITY_EDIT,136,133,40,13,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "Издавать звук при успешном создании скриншота",IDC_BEEP_CHECKBOX,
+    CONTROL         "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_BEEP_CHECKBOX,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,188,200,10
 END
 
 ID_INTERFACE_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Интерфейс"
+CAPTION "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    GROUPBOX        " Клавиша для создания скриншота: ",IDC_STATIC,7,7,242,64
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,7,242,64
     CONTROL         "PrtSc / SysRq",IDC_KEY_PRTSC,"Button",BS_AUTORADIOBUTTON,17,23,221,10
     CONTROL         "~ / `",IDC_KEY_TILDE,"Button",BS_AUTORADIOBUTTON,17,38,221,10
     CONTROL         "Esc",IDC_KEY_ESC,"Button",BS_AUTORADIOBUTTON,17,53,221,10
-    GROUPBOX        " Игровые сервера: ",IDC_STATIC,7,75,242,39
-    LTEXT           "Количество кнопок:",IDC_STATIC,17,89,70,14,SS_CENTERIMAGE
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ",IDC_STATIC,7,75,242,39
+    LTEXT           "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:",IDC_STATIC,17,89,70,14,SS_CENTERIMAGE
     EDITTEXT        IDC_SERVERBUTTONS_EDIT,97,89,52,14,ES_AUTOHSCROLL | ES_NUMBER
 END
 
 ID_CHAT_SETTINGS_PAGE DIALOGEX 0, 0, 256, 207
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Боевой чат"
+CAPTION "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
-    GROUPBOX        " Сообщения для отправки в боевой чат: ",IDC_STATIC,7,7,242,193
-    CTEXT           "Клавиша",IDC_STATIC,9,19,36,8
-    CTEXT           "Текст сообщения",IDC_STATIC,46,19,163,8
+    GROUPBOX        " пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ: ",IDC_STATIC,7,7,242,193
+    CTEXT           "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_STATIC,9,19,36,8
+    CTEXT           "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",IDC_STATIC,46,19,163,8
     CTEXT           "[Team]",IDC_STATIC,213,19,24,8
     CTEXT           "F1",IDC_STATIC,9,33,36,14,SS_CENTERIMAGE
     EDITTEXT        IDC_CHAT_EDIT1,46,33,163,14,ES_AUTOHSCROLL
@@ -182,29 +182,29 @@ IDR_BEEPWAVE            WAVE                    "click.wav"
 STRINGTABLE 
 BEGIN
     IDS_LANGUAGE            "ru"
-    IDS_VERSION             "Версия %s от %s"
-    IDS_SETTINGS_TITLE      "Настройки OpenMyTank"
-    IDS_SETTINGS_BUTTON     "Изменить настройки"
-    IDS_LEFT_CLICKER_BUTTON "Кликать Слева"
-    IDS_RIGHT_CLICKER_BUTTON "Кликать Справа"
-    IDS_GET_URL_BUTTON      "Взять Url"
-    IDS_OPEN_URL_BUTTON     "Открыть Url"
-    IDS_CLICKING_BUTTON     "Кликаю..."
-    IDS_SCREENSHOT_PATH     "Выберите папку для скриншотов:"
-    IDS_SCREENSHOT_DIR      "Скриншоты из OpenMyTank"
-    IDS_NEWS                "OpenMyTank - специальный быстрый клиент для онлайн игры TankiOnline.com\nOpenMyTank - opensource версия MyTank, которая не может считаться вредоносным и запрещенным ПО"
-    IDS_F1_MESSAGE          "База"
-    IDS_F2_MESSAGE          "Лево"
-    IDS_F3_MESSAGE          "Центр"
-    IDS_F4_MESSAGE          "Право"
-    IDS_F5_MESSAGE          "Отбой"
-    IDS_F6_MESSAGE          "Прикройте Слева"
-    IDS_F7_MESSAGE          "Прикройте Центр"
-    IDS_F8_MESSAGE          "Прикройте Справа"
-    IDS_F9_MESSAGE          "Переоденусь и вернусь"
-    IDS_F10_MESSAGE         "Я с пола подобрал!"
-    IDS_HELP_PAGE_BUTTON    "Онлайн Справка"
-    IDS_BATTLE_IS_LOADED    "Битва загружена!"
+    IDS_VERSION             "пїЅпїЅпїЅпїЅпїЅпїЅ %s пїЅпїЅ %s"
+    IDS_SETTINGS_TITLE      "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ OpenMyTank"
+    IDS_SETTINGS_BUTTON     "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+    IDS_LEFT_CLICKER_BUTTON "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+    IDS_RIGHT_CLICKER_BUTTON "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+    IDS_GET_URL_BUTTON      "пїЅпїЅпїЅпїЅпїЅ Url"
+    IDS_OPEN_URL_BUTTON     "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Url"
+    IDS_CLICKING_BUTTON     "пїЅпїЅпїЅпїЅпїЅпїЅ..."
+    IDS_SCREENSHOT_PATH     "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:"
+    IDS_SCREENSHOT_DIR      "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ OpenMyTank"
+    IDS_NEWS                "OpenMyTank - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ TankiOnline.com\nOpenMyTank - opensource пїЅпїЅпїЅпїЅпїЅпїЅ MyTank, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ"
+    IDS_F1_MESSAGE          "пїЅпїЅпїЅпїЅ"
+    IDS_F2_MESSAGE          "пїЅпїЅпїЅпїЅ"
+    IDS_F3_MESSAGE          "пїЅпїЅпїЅпїЅпїЅ"
+    IDS_F4_MESSAGE          "пїЅпїЅпїЅпїЅпїЅ"
+    IDS_F5_MESSAGE          "пїЅпїЅпїЅпїЅпїЅ"
+    IDS_F6_MESSAGE          "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+    IDS_F7_MESSAGE          "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+    IDS_F8_MESSAGE          "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+    IDS_F9_MESSAGE          "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+    IDS_F10_MESSAGE         "пїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"
+    IDS_HELP_PAGE_BUTTON    "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+    IDS_BATTLE_IS_LOADED    "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"
     IDS_LINGUALEO           "Source code on GitHub: github.com/karpuzov/OpenMyTank"
 END
 

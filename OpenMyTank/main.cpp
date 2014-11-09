@@ -2,16 +2,16 @@
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
-#include "tanki_online.h"
-#include "flash.h"
-#include "gui.h"
-#include "clipboard_manager.h"
-#include "hooks.h"
-#include "screenshot.h"
-#include "web_browser.h"
-#include "account.h"
-#include "clicker_thread.h"
-#include "autoupdating.h"
+#include "TankiOnline.h"
+#include "Flash.h"
+#include "Gui.h"
+#include "ClipboardManager.h"
+#include "Hooks.h"
+#include "Screenshot.h"
+#include "WebBrowser.h"
+#include "Account.h"
+#include "ClickerThread.h"
+#include "AutoUpdating.h"
 
 #include <windows.h>
 #include <Windowsx.h>

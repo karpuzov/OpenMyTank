@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------
 
-#include "flash.h"
-#include "web_browser.h"
-#include "tanki_online.h"
-#include "settings.h"
-#include "chat_writer.h"
+#include "Flash.h"
+#include "WebBrowser.h"
+#include "TankiOnline.h"
+#include "Settings.h"
+#include "ChatWriter.h"
 
 #include <atlbase.h>
 
