@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -11,7 +10,7 @@
 
 //-----------------------------------------------------------------------------
 
-typedef  std::basic_string<TCHAR>  tstring;
+typedef std::basic_string<TCHAR> tstring;
 
 tstring C2T(const std::string& text);
 std::string T2C(const tstring& text);

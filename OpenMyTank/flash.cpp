@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #include "flash.h"
@@ -22,10 +21,10 @@ SHORT GlobalSnapshotKey = 0;
 
 static DWORD GetPixelColor(const HWND window, const int x, const int y)
 {
-  const HDC dc = ::GetDC(window);
-  const DWORD color = ::GetPixel(dc, x, y);
-  ::ReleaseDC(window, dc);
-  return color;
+    const HDC dc = ::GetDC(window);
+    const DWORD color = ::GetPixel(dc, x, y);
+    ::ReleaseDC(window, dc);
+    return color;
 }
 
 //-----------------------------------------------------------------------------
@@ -42,225 +41,222 @@ static PlayerWindow* FlashPlayerObject = NULL;
 //-----------------------------------------------------------------------------
 
 PlayerWindow::PlayerWindow(CONST HWND parentWindow, CONST TCHAR url[])
-  : AtlWindow(NULL)
-  , FlashHwnd(NULL)
-  , RemainTimerIterations(60 * 10)
-  , CurrentChatWriter(NULL)
+        : atlWindow(NULL), flashHwnd(NULL), remainTimerIterations(60 * 10), currentChatWriter(NULL)
 {
-  assert(FlashPlayerObject == NULL);
-  FlashPlayerObject = this;
+    assert(FlashPlayerObject == NULL);
+    FlashPlayerObject = this;
 
-  AtlWindow = ::CreateWindow(TEXT(ATLAXWIN_CLASS),
-                             url,
-                             WS_VISIBLE | WS_CHILD,
-                             0, 0, 0, 0,
-                             parentWindow, NULL, Instance, NULL);
-  if (AtlWindow == NULL)
-  {
-    throw TEXT("Cannot create ActiveX window");
-  }
+    atlWindow = ::CreateWindow(TEXT(ATLAXWIN_CLASS),
+            url,
+            WS_VISIBLE | WS_CHILD,
+            0, 0, 0, 0,
+            parentWindow, NULL, Instance, NULL);
+    if (atlWindow == NULL)
+    {
+        throw TEXT("Cannot create ActiveX window");
+    }
 
-  ::SetWindowPos(AtlWindow, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ::SetWindowPos(atlWindow, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 
-  Browser.reset(new WebBrowser(AtlWindow));
+    browser.reset(new WebBrowser(atlWindow));
 
-  ::SetTimer(AtlWindow, GetInitialTimerId(), 100, (TIMERPROC)InitialTimerProc);
+    ::SetTimer(atlWindow, getInitialTimerId(), 100, (TIMERPROC)initialTimerProc);
 
-  GlobalSnapshotKey = GetSettings()->SnapshotKey;
+    GlobalSnapshotKey = GetSettings()->snapshotKey;
 }
 
 //-----------------------------------------------------------------------------
 
 PlayerWindow::~PlayerWindow()
 {
-  GlobalChatWriter = NULL;
-  delete CurrentChatWriter;
+    GlobalChatWriter = NULL;
+    delete currentChatWriter;
 
-  ReleaseAll();
+    releaseAll();
 
-  assert(FlashPlayerObject != NULL);
-  FlashPlayerObject = NULL;
+    assert(FlashPlayerObject != NULL);
+    FlashPlayerObject = NULL;
 }
 
 //-----------------------------------------------------------------------------
 
 HWND
-PlayerWindow::GetFlashHwnd() const
+PlayerWindow::getFlashHwnd() const
 {
-  if (FlashHwnd == NULL)
-  {
-    InitialTimerProc(NULL, 0, GetInitialTimerId(), 0);
-  }
-  return FlashHwnd;
+    if (flashHwnd == NULL)
+    {
+        initialTimerProc(NULL, 0, getInitialTimerId(), 0);
+    }
+    return flashHwnd;
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::MoveWindow(CONST RECT& rect)
+PlayerWindow::moveWindow(CONST RECT& rect)
 {
-  WindowSize.cx = rect.right - rect.left + 1;
-  WindowSize.cy = rect.bottom - rect.top + 1;
-  ::MoveWindow(AtlWindow, rect.left, rect.top, WindowSize.cx, WindowSize.cy, TRUE);
+    windowSize.cx = rect.right - rect.left + 1;
+    windowSize.cy = rect.bottom - rect.top + 1;
+    ::MoveWindow(atlWindow, rect.left, rect.top, windowSize.cx, windowSize.cy, TRUE);
 }
 
 //-----------------------------------------------------------------------------
 
 SIZE
-PlayerWindow::GetSize() const
+PlayerWindow::getSize() const
 {
-  return WindowSize;
+    return windowSize;
 }
 
 //-----------------------------------------------------------------------------
 
 tstring
-PlayerWindow::GetBattleUrl() const
+PlayerWindow::getBattleUrl() const
 {
-  assert(Browser.get() != NULL);
-  return Browser->GetUrl();
+    assert(browser.get() != NULL);
+    return browser->getUrl();
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::ClickLeftPlayButton() const
+PlayerWindow::clickLeftPlayButton() const
 {
-  assert(GetFlashHwnd() != NULL);
-  const POINTS points = TO::GetLeftPlayButtonClickPoint(WindowSize);
-  const LPARAM lParam = (LPARAM)(MAKELPARAM(points.x, points.y));
-  ::PostMessage(FlashHwnd, WM_LBUTTONDOWN, 0, lParam);
-  ::PostMessage(FlashHwnd, WM_LBUTTONUP, 0, lParam);
+    assert(getFlashHwnd() != NULL);
+    const POINTS points = TO::GetLeftPlayButtonClickPoint(windowSize);
+    const LPARAM lParam = (LPARAM)(MAKELPARAM(points.x, points.y));
+    ::PostMessage(flashHwnd, WM_LBUTTONDOWN, 0, lParam);
+    ::PostMessage(flashHwnd, WM_LBUTTONUP, 0, lParam);
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::ClickRightPlayButton() const
+PlayerWindow::clickRightPlayButton() const
 {
-  assert(GetFlashHwnd() != NULL);
-  const POINTS points = TO::GetRightPlayButtonClickPoint(WindowSize);
-  const LPARAM lParam = (LPARAM)(MAKELPARAM(points.x, points.y));
-  ::PostMessage(FlashHwnd, WM_LBUTTONDOWN, 0, lParam);
-  ::PostMessage(FlashHwnd, WM_LBUTTONUP, 0, lParam);
+    assert(getFlashHwnd() != NULL);
+    const POINTS points = TO::GetRightPlayButtonClickPoint(windowSize);
+    const LPARAM lParam = (LPARAM)(MAKELPARAM(points.x, points.y));
+    ::PostMessage(flashHwnd, WM_LBUTTONDOWN, 0, lParam);
+    ::PostMessage(flashHwnd, WM_LBUTTONUP, 0, lParam);
 }
 
 //-----------------------------------------------------------------------------
 
 bool
-PlayerWindow::IsBattleHappens() const
+PlayerWindow::isBattleHappens() const
 {
-  const DWORD color = GetPixelColor(GetFlashHwnd(), WindowSize.cx - 20, WindowSize.cy - 11);
-  return bool(color == 0xFFFFFF);
+    const DWORD color = GetPixelColor(getFlashHwnd(), windowSize.cx - 20, windowSize.cy - 11);
+    return bool(color == 0xFFFFFF);
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::ReleaseAll()
+PlayerWindow::releaseAll()
 {
-  ::KillTimer(AtlWindow, GetInitialTimerId());
-  Browser.reset();
-  if (AtlWindow != NULL)
-  {
-    ::DestroyWindow(AtlWindow);
-    AtlWindow = NULL;
-  }
+    ::KillTimer(atlWindow, getInitialTimerId());
+    browser.reset();
+    if (atlWindow != NULL)
+    {
+        ::DestroyWindow(atlWindow);
+        atlWindow = NULL;
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 UINT
-PlayerWindow::GetInitialTimerId() const
+PlayerWindow::getInitialTimerId() const
 {
-  return (UINT)(this);
+    return (UINT)(this);
 }
 
 //-----------------------------------------------------------------------------
 
 void CALLBACK
-PlayerWindow::InitialTimerProc(HWND /*hwnd*/, UINT /*message*/, UINT thisPointer, DWORD /*time*/)
+PlayerWindow::initialTimerProc(HWND /*hwnd*/, UINT /*message*/, UINT thisPointer, DWORD /*time*/)
 {
-  PlayerWindow* object = reinterpret_cast<PlayerWindow*>(thisPointer);
-  HWND hwnd = ::FindWindowEx(FlashPlayerObject->AtlWindow, NULL, NULL, NULL);
-  if (hwnd != NULL)
-  {
-    hwnd = ::FindWindowEx(hwnd, NULL, NULL, NULL);
+    PlayerWindow* object = reinterpret_cast<PlayerWindow*>(thisPointer);
+    HWND hwnd = ::FindWindowEx(FlashPlayerObject->atlWindow, NULL, NULL, NULL);
     if (hwnd != NULL)
     {
-      hwnd = ::FindWindowEx(hwnd, NULL, NULL, NULL);
-      if (hwnd != NULL)
-      {
-        const HWND parent = hwnd;
-        hwnd = NULL;
-        do
+        hwnd = ::FindWindowEx(hwnd, NULL, NULL, NULL);
+        if (hwnd != NULL)
         {
-          hwnd = ::FindWindowEx(parent, hwnd, NULL, NULL);
-          if (hwnd != NULL)
-          {
-            RECT rc;
-            ::GetClientRect(hwnd, &rc);
-            if (rc.bottom == 1 || rc.right == 1)
+            hwnd = ::FindWindowEx(hwnd, NULL, NULL, NULL);
+            if (hwnd != NULL)
             {
-              object->RemainTimerIterations = 0;
-              ::ShowWindow(hwnd, SW_HIDE);
+                const HWND parent = hwnd;
+                hwnd = NULL;
+                do
+                {
+                    hwnd = ::FindWindowEx(parent, hwnd, NULL, NULL);
+                    if (hwnd != NULL)
+                    {
+                        RECT rc;
+                        ::GetClientRect(hwnd, &rc);
+                        if (rc.bottom == 1 || rc.right == 1)
+                        {
+                            object->remainTimerIterations = 0;
+                            ::ShowWindow(hwnd, SW_HIDE);
+                        }
+                        else
+                        {
+                            object->flashHwnd = hwnd;
+                            object->currentChatWriter = CreateChatWriterForWindow(hwnd);
+                            GlobalChatWriter = object->currentChatWriter;
+                        }
+                    }
+                }
+                while (hwnd != NULL);
+                if (object->remainTimerIterations <= 0)
+                {
+                    ::KillTimer(FlashPlayerObject->atlWindow, thisPointer);
+                }
             }
-            else
-            {
-              object->FlashHwnd = hwnd;
-              object->CurrentChatWriter = CreateChatWriterForWindow(hwnd);
-              GlobalChatWriter = object->CurrentChatWriter;
-            }
-          }
         }
-        while (hwnd != NULL);
-        if (object->RemainTimerIterations <= 0)
-        {
-          ::KillTimer(FlashPlayerObject->AtlWindow, thisPointer);
-        }
-      }
     }
-  }
-  --object->RemainTimerIterations;
+    --object->remainTimerIterations;
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::SendMessage(UINT message, WPARAM wParam, LPARAM lParam)
+PlayerWindow::sendMessage(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetFlashHwnd() != NULL)
-  {
-    ::SendMessage(GetFlashHwnd(), message, wParam, lParam);
-  }
+    if (getFlashHwnd() != NULL)
+    {
+        ::SendMessage(getFlashHwnd(), message, wParam, lParam);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::PostMessage(UINT message, WPARAM wParam, LPARAM lParam)
+PlayerWindow::postMessage(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (GetFlashHwnd() != NULL)
-  {
-    ::PostMessage(GetFlashHwnd(), message, wParam, lParam);
-  }
+    if (getFlashHwnd() != NULL)
+    {
+        ::PostMessage(getFlashHwnd(), message, wParam, lParam);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 void
-PlayerWindow::ActivateWindow(CONST HWND activateWindow) const
+PlayerWindow::activateWindow(CONST HWND activateWindow) const
 {
-  if (GetFlashHwnd() != NULL)
-  {
-    ::SetForegroundWindow(GetFlashHwnd());
-    ::SetActiveWindow(GetFlashHwnd());
-    ::PostMessage(GetFlashHwnd(), WM_ACTIVATE, (WPARAM)WA_CLICKACTIVE, (LPARAM)activateWindow);
-  }
+    if (getFlashHwnd() != NULL)
+    {
+        ::SetForegroundWindow(getFlashHwnd());
+        ::SetActiveWindow(getFlashHwnd());
+        ::PostMessage(getFlashHwnd(), WM_ACTIVATE, (WPARAM)WA_CLICKACTIVE, (LPARAM)activateWindow);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
-} // namespace Flash
+}// namespace Flash
 
 //-----------------------------------------------------------------------------

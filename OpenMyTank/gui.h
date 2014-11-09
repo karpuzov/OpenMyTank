@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -32,7 +31,7 @@ int GetMenuHeight();
 
 DWORD GetMainWindowGwlStyle();
 
-const TCHAR*const GetWindowClassName();
+const TCHAR* const GetWindowClassName();
 
 //-----------------------------------------------------------------------------
 
@@ -40,140 +39,136 @@ class Window
 {
 public:
 
-  Window(const HWND parent, const RECT& rect);
+    Window(const HWND parent, const RECT& rect);
 
-  virtual ~Window();
+    virtual ~Window();
 
-  HWND GetHwnd() const;
+    HWND getHwnd() const;
 
-  POINT GetPoint() const;
-  SIZE GetSize() const;
+    POINT getPoint() const;
+    SIZE getSize() const;
 
-  void SetRect(const RECT& rect);
-  void Resize(const SIZE& newSize);
-  void Move(const POINT& point);
+    void setRect(const RECT& rect);
+    void resize(const SIZE& newSize);
+    void move(const POINT& point);
 
 protected:
 
-  const HWND ParentHwnd;
-  HWND Hwnd;
+    const HWND parentHwnd;
+    HWND hwnd;
 
-  SIZE Size;
-  POINT Position;
+    SIZE size;
+    POINT position;
 
-  void Repaint();
-  virtual void Draw(HDC hdc) const;
+    void repaint();
+    virtual void draw(HDC hdc) const;
 
 private:
 
-  void UpdatePosition();
+    void updatePosition();
 };
 
 //-----------------------------------------------------------------------------
 
-class Label : public Window
+class Label
+    : public Window
 {
 public:
 
-  Label(const HWND parent,
-        const RECT& rect,
-        const TCHAR text[]);
+    Label(const HWND parent, const RECT& rect, const TCHAR text[]);
 
-  virtual ~Label();
+    virtual ~Label();
 
-  void SetTextColor(const COLORREF color);
-  void SetBackgroundColor(const COLORREF color);
+    void setTextColor(const COLORREF color);
+    void setBackgroundColor(const COLORREF color);
 
-  void SetFont(const LOGFONT& logFont);
+    void setFont(const LOGFONT& logFont);
 
 protected:
 
-  virtual void Draw(HDC hdc) const;
+    virtual void draw(HDC hdc) const;
 
-protected: // usefull for MultilineLabel
+protected:
+    // usefull for MultilineLabel
 
-  static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK windowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-  static TCHAR* GetClassName()
-  {
-    return TEXT("OpenMyTank#Label");
-  }
+    static TCHAR* getClassName()
+    {
+        return TEXT("OpenMyTank#Label");
+    }
 
-  static int RefCount;
-  static HFONT DefaultFont;
+    static int refCount;
+    static HFONT defaultFont;
 
-  const tstring Caption;
+    const tstring caption;
 
-  COLORREF TextColor;
-  COLORREF BackgroundColor;
-  HFONT Font;
+    COLORREF textColor;
+    COLORREF backgroundColor;
+    HFONT font;
 };
 
 //-----------------------------------------------------------------------------
 
-class MultilineLabel : public Label
+class MultilineLabel
+    : public Label
 {
 public:
 
-  MultilineLabel(const HWND parent,
-                 const RECT& rect,
-                 const TCHAR text[]);
+    MultilineLabel(const HWND parent, const RECT& rect, const TCHAR text[]);
 
 protected:
 
-  virtual void Draw(HDC hdc) const;
+    virtual void draw(HDC hdc) const;
 };
 
 //-----------------------------------------------------------------------------
 
-class Button : public Window
+class Button
+    : public Window
 {
 public:
 
-  Button(const HWND parent,
-         const RECT& rect,
-         const TCHAR text[],
-         const DWORD id,
-         bool checkboxLike = false);
+    Button(const HWND parent, const RECT& rect, const TCHAR text[], const DWORD id, bool checkboxLike = false);
 
-  virtual ~Button();
+    virtual ~Button();
 
-  DWORD GetId() const;
+    DWORD getId() const;
 
-  void SetEnabled(const bool enabled = true);
+    void setEnabled(const bool enabled = true);
 
-  bool GetChecked() const;
-  void SetChecked(const bool checked = true);
+    bool getChecked() const;
+    void setChecked(const bool checked = true);
 
-  void Click();
+    void click();
 
 protected:
 
-  bool IsEnabled;
-  bool IsInside;
-  bool IsPressed;
-  bool IsChecked;
+    bool isEnabled;
+    bool isInside;
+    bool isPressed;
+    bool isChecked;
 
-  virtual void Draw(HDC hdc) const;
+    virtual void draw(HDC hdc) const;
 
 private:
 
-  static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK windowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-  static TCHAR* GetClassName()
-  {
-    return TEXT("OpenMyTank#Button");
-  }
+    static TCHAR* getClassName()
+    {
+        return TEXT("OpenMyTank#Button");
+    }
 
-  static int RefCount;
+    static int refCount;
 
-  static HFONT Font;
+    static HFONT font;
 
-  const tstring Caption;
-  const DWORD Id;
-  bool IsCheckbox;
+    const tstring caption;
+    const DWORD id;
+    bool isCheckbox;
 
-  SIZE GetMinSize() const;
+    SIZE getMinSize() const;
 };
 
 //-----------------------------------------------------------------------------
@@ -181,37 +176,38 @@ private:
 class WindowTitle
 {
 public:
-  WindowTitle(CONST TCHAR* loginName)
-  {
-    LoginPart[0] = '\0';
-    if (loginName[0] != '\0')
+    WindowTitle(CONST TCHAR* loginName)
     {
-      ::wsprintf(LoginPart, TEXT("[%s] "), loginName);
+        loginPart[0] = '\0';
+        if (loginName[0] != '\0')
+        {
+            ::wsprintf(loginPart, TEXT("[%s] "), loginName);
+        }
+        setActiveServer();
     }
-    SetActiveServer();
-  }
 
-  CONST TCHAR* Get()
-  {
-    return Title;
-  }
+    CONST TCHAR* get()
+    {
+        return title;
+    }
 
-  CONST TCHAR* SetActiveServer(const int serverNumber = -1)
-  {
-    if (serverNumber == -1)
+    CONST TCHAR* setActiveServer(const int serverNumber = -1)
     {
-      ::wsprintf(Title, TEXT("%s%s %s"), LoginPart, ProgramTitle, C2T(VersionNumber).c_str());
+        if (serverNumber == -1)
+        {
+            ::wsprintf(title, TEXT("%s%s %s"), loginPart, ProgramTitle, C2T(VersionNumber).c_str());
+        }
+        else
+        {
+            ::wsprintf(title, TEXT("%s[%d] %s %s"), loginPart, serverNumber, ProgramTitle,
+                    C2T(VersionNumber).c_str());
+        }
+        return title;
     }
-    else
-    {
-      ::wsprintf(Title, TEXT("%s[%d] %s %s"), LoginPart, serverNumber, ProgramTitle, C2T(VersionNumber).c_str());
-    }
-    return Title;
-  }
 
 private:
-  TCHAR LoginPart[32];
-  TCHAR Title[512];
+    TCHAR loginPart[32];
+    TCHAR title[512];
 };
 
 //-----------------------------------------------------------------------------
@@ -220,41 +216,44 @@ class AboutWindow
 {
 public:
 
-  AboutWindow(CONST HWND parent);
-  ~AboutWindow();
+    AboutWindow(CONST HWND parent);
+    ~AboutWindow();
 
-  void UpdateSize();
+    void updateSize();
 
-  static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK windowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 
-  CONST TCHAR* ClassName;
-  HWND ParentWindow;
+    CONST TCHAR* className;
+    HWND parentWindow;
 
-  HWND Window;
+    HWND window;
 
-  Label*  ProgramNameStatic;
-  Label*  VersionStatic;
-  MultilineLabel*  NewsStatic;
-  Button* SettingsButton;
-  Button* HelpPageButton;
-  Button* HomePageButton;
-  Button* VkGroupPageButton;
-  Button* NewCopyrightButton;
-  Button* OldCopyrightButton;
+    Label* programNameStatic;
+    Label* versionStatic;
+    MultilineLabel* newsStatic;
+    Button* settingsButton;
+    Button* helpPageButton;
+    Button* homePageButton;
+    Button* vkGroupPageButton;
+    Button* newCopyrightButton;
+    Button* oldCopyrightButton;
 
-  enum {Width = 1000, Height = 600};
+    enum
+    {
+        Width = 1000, Height = 600
+    };
 
-  enum
-  {
-    SettingsButtonId,
-    HelpPageButtonId,
-    HomePageButtonId,
-    VkGroupPageButtonId,
-    NewCopyrightButtonId,
-    OldCopyrightButtonId
-  };
+    enum
+    {
+        SettingsButtonId,
+        HelpPageButtonId,
+        HomePageButtonId,
+        VkGroupPageButtonId,
+        NewCopyrightButtonId,
+        OldCopyrightButtonId
+    };
 };
 
 //-----------------------------------------------------------------------------
@@ -263,30 +262,36 @@ class ClickerWindow
 {
 public:
 
-  ClickerWindow(const HWND parent, const RECT rect, Button* button);
-  ~ClickerWindow();
+    ClickerWindow(const HWND parent, const RECT rect, Button* button);
+    ~ClickerWindow();
 
-  HWND GetHwnd() const;
+    HWND getHwnd() const;
 
-  static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK windowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 
-  static int RefCount;
+    static int refCount;
 
-  const TCHAR* ClassName;
-  Button* BuddyButton;
+    const TCHAR* className;
+    Button* buddyButton;
 
-  HWND Window;
+    HWND window;
 
-  Button* CancelButton;
+    Button* cancelButton;
 
-  enum { CancelButtonId = 1 };
-  enum { Margin = 5 };
+    enum
+    {
+        CancelButtonId = 1
+    };
+    enum
+    {
+        Margin = 5
+    };
 };
 
 //-----------------------------------------------------------------------------
 
-} // namespace Gui
+}// namespace Gui
 
 //-----------------------------------------------------------------------------

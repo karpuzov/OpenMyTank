@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -17,29 +16,29 @@ class ChatWriter
 {
 public:
 
-  ChatWriter(const HWND window);
+    ChatWriter(const HWND window);
 
-  void AddPhrase(const SHORT virtualKey, const tstring& phrase, const bool team = false);
+    void addPhrase(const SHORT virtualKey, const tstring& phrase, const bool team = false);
 
-  bool DispatchKeyboardMessage(const WPARAM wParam, const LPARAM lParam) const;
+    bool dispatchKeyboardMessage(const WPARAM wParam, const LPARAM lParam) const;
 
 private:
 
-  const HWND Hwnd;
+    const HWND hwnd;
 
-  struct ChatString
-  {
-    tstring String;
-    bool    IsTeam;
-  };
-  typedef  std::map<SHORT, ChatString>  KeyToStringMap;
+    struct ChatString
+    {
+        tstring string;
+        bool isTeam;
+    };
+    typedef std::map<SHORT,ChatString> KeyToStringMap;
 
-  KeyToStringMap  KeyToChatString;
+    KeyToStringMap keyToChatString;
 
-  static const UINT LParamForDownT;
-  static const UINT LParamForUpT;
-  static const UINT LParamForDownEnter;
-  static const UINT LParamForUpEnter;
+    static const UINT LParamForDownT;
+    static const UINT LParamForUpT;
+    static const UINT LParamForDownEnter;
+    static const UINT LParamForUpEnter;
 };
 
 //-----------------------------------------------------------------------------

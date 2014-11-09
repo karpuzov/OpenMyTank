@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -11,10 +10,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace Gdiplus
-{
-class EncoderParameters;
-}
+namespace Gdiplus { class EncoderParameters; }
 
 //-----------------------------------------------------------------------------
 
@@ -22,34 +18,31 @@ class Screenshoter
 {
 public:
 
-  Screenshoter(const WCHAR* path,
-               const TCHAR* dateFormat,
-               const TCHAR* timeFormat,
-               const WCHAR* format,
-               const LONG jpegQuality,
-               const bool beepOnSuccess);
-  ~Screenshoter();
+    Screenshoter(
+        const WCHAR* path, const TCHAR* dateFormat, const TCHAR* timeFormat, const WCHAR* format,
+        const LONG jpegQuality, const bool beepOnSuccess);
+    ~Screenshoter();
 
-  bool SaveScreen(const HWND window);
+    bool saveScreen(const HWND window);
 
 private:
 
-  const WCHAR*const Path;
-  const TCHAR*const DateFormat;
-  const TCHAR*const TimeFormat;
-  const WCHAR*const Format;
+    const WCHAR* const path;
+    const TCHAR* const dateFormat;
+    const TCHAR* const timeFormat;
+    const WCHAR* const format;
 
-  ULONG_PTR GdiplusToken;
+    ULONG_PTR gdiplusToken;
 
-  WCHAR FileName[MAX_PATH];
-  WCHAR* DateStart;
+    WCHAR fileName[MAX_PATH];
+    WCHAR* dateStart;
 
-  const LONG JpegQuality;
-  Gdiplus::EncoderParameters* JpegParameters;
+    const LONG jpegQuality;
+    Gdiplus::EncoderParameters* jpegParameters;
 
-  const bool BeepOnSuccess;
+    const bool beepOnSuccess;
 
-  WCHAR*const MakeFileName();
+    WCHAR* const makeFileName();
 };
 
 //-----------------------------------------------------------------------------
@@ -58,41 +51,32 @@ class ScreenshoterThread : public Thread
 {
 public:
 
-  ScreenshoterThread(const HWND window,
-                     const WCHAR* path,
-                     const TCHAR* dateFormat,
-                     const TCHAR* timeFormat,
-                     const WCHAR* format,
-                     const LONG jpegQuality,
-                     const bool beepOnSuccess,
-                     const HWND parentWindow)
-    : Thread(parentWindow)
-    , Window(window)
-    , Path(path)
-    , DateFormat(dateFormat)
-    , TimeFormat(timeFormat)
-    , Format(format)
-    , JpegQuality(jpegQuality)
-    , BeepOnSuccess(beepOnSuccess)
-  {
-  }
+    ScreenshoterThread(
+        const HWND window, const WCHAR* path, const TCHAR* dateFormat, const TCHAR* timeFormat,
+        const WCHAR* format, const LONG jpegQuality, const bool beepOnSuccess,
+        const HWND parentWindow)
+            : Thread(parentWindow), window(window), path(path), dateFormat(dateFormat)
+            , timeFormat(timeFormat), format(format), jpegQuality(jpegQuality)
+            , beepOnSuccess(beepOnSuccess)
+    {
+    }
 
-  void Run()
-  {
-    Screenshoter(Path, DateFormat, TimeFormat, Format, JpegQuality, BeepOnSuccess)
-        .SaveScreen(Window);
-  }
+    void run()
+    {
+        Screenshoter(path, dateFormat, timeFormat, format, jpegQuality, beepOnSuccess).saveScreen(
+                window);
+    }
 
 private:
 
-  const HWND Window;
+    const HWND window;
 
-  const WCHAR*const Path;
-  const TCHAR*const DateFormat;
-  const TCHAR*const TimeFormat;
-  const WCHAR*const Format;
-  const LONG JpegQuality;
-  const bool BeepOnSuccess;
+    const WCHAR* const path;
+    const TCHAR* const dateFormat;
+    const TCHAR* const timeFormat;
+    const WCHAR* const format;
+    const LONG jpegQuality;
+    const bool beepOnSuccess;
 
 };
 

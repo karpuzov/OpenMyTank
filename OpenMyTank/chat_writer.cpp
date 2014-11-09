@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #include "chat_writer.h"
@@ -10,62 +9,62 @@
 const UINT ChatWriter::LParamForDownT = (::MapVirtualKey('T', MAPVK_VK_TO_VSC)) << 16;
 const UINT ChatWriter::LParamForUpT = (::MapVirtualKey('T', MAPVK_VK_TO_VSC) + KF_UP) << 16;
 const UINT ChatWriter::LParamForDownEnter = (::MapVirtualKey(VK_RETURN, MAPVK_VK_TO_VSC)) << 16;
-const UINT ChatWriter::LParamForUpEnter = (::MapVirtualKey(VK_RETURN, MAPVK_VK_TO_VSC) + KF_UP) << 16;
+const UINT ChatWriter::LParamForUpEnter = (::MapVirtualKey(VK_RETURN, MAPVK_VK_TO_VSC) + KF_UP)
+        << 16;
 
 //-----------------------------------------------------------------------------
 
 ChatWriter::ChatWriter(const HWND window)
-  : Hwnd(window)
+        : hwnd(window)
 {
 }
 
 //-----------------------------------------------------------------------------
 
 void
-ChatWriter::AddPhrase(const SHORT virtualKey, const tstring& phrase, const bool team)
+ChatWriter::addPhrase(const SHORT virtualKey, const tstring& phrase, const bool team)
 {
-  ChatString chatString;
-  chatString.String = tstring(phrase);
-  chatString.IsTeam = team;
+    ChatString chatString;
+    chatString.string = tstring(phrase);
+    chatString.isTeam = team;
 
-  KeyToChatString[virtualKey] = chatString;
+    keyToChatString[virtualKey] = chatString;
 }
 
 //-----------------------------------------------------------------------------
 
 bool
-ChatWriter::DispatchKeyboardMessage(const WPARAM wParam, const LPARAM /*lParam*/) const
+ChatWriter::dispatchKeyboardMessage(const WPARAM wParam, const LPARAM /*lParam*/) const
 {
-  const KeyToStringMap::const_iterator it = KeyToChatString.find(wParam);
-  if (it != KeyToChatString.end())
-  {
-    const ChatString& chatString = it->second;
-
-    if (chatString.IsTeam)
+    const KeyToStringMap::const_iterator it = keyToChatString.find(wParam);
+    if (it != keyToChatString.end())
     {
-      ::PostMessage(Hwnd, WM_KEYDOWN, 'T', LParamForDownT);
-      ::PostMessage(Hwnd, WM_KEYUP,   'T', LParamForUpT);
-    }
-    else
-    {
-      ::PostMessage(Hwnd, WM_KEYDOWN, VK_RETURN, LParamForDownEnter);
-      ::PostMessage(Hwnd, WM_KEYUP,   VK_RETURN, LParamForUpEnter);
-    }
+        const ChatString& chatString = it->second;
 
-    const tstring::const_iterator endCharIt = chatString.String.end();
-    for (tstring::const_iterator charIt = chatString.String.begin();
-         charIt != endCharIt;
-         ++charIt)
-    {
-      ::PostMessage(Hwnd, WM_CHAR, *charIt, 0);
+        if (chatString.isTeam)
+        {
+            ::PostMessage(hwnd, WM_KEYDOWN, 'T', LParamForDownT);
+            ::PostMessage(hwnd, WM_KEYUP, 'T', LParamForUpT);
+        }
+        else
+        {
+            ::PostMessage(hwnd, WM_KEYDOWN, VK_RETURN, LParamForDownEnter);
+            ::PostMessage(hwnd, WM_KEYUP, VK_RETURN, LParamForUpEnter);
+        }
+
+        const tstring::const_iterator endCharIt = chatString.string.end();
+        for (tstring::const_iterator charIt = chatString.string.begin(); charIt != endCharIt;
+                ++charIt)
+        {
+            ::PostMessage(hwnd, WM_CHAR, *charIt, 0);
+        }
+
+        ::PostMessage(hwnd, WM_KEYDOWN, VK_RETURN, LParamForDownEnter);
+        ::PostMessage(hwnd, WM_KEYUP, VK_RETURN, LParamForUpEnter);
+
+        return true;
     }
-
-    ::PostMessage(Hwnd, WM_KEYDOWN, VK_RETURN, LParamForDownEnter);
-    ::PostMessage(Hwnd, WM_KEYUP,   VK_RETURN, LParamForUpEnter);
-
-    return true;
-  }
-  return false;
+    return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -74,15 +73,14 @@ ChatWriter::DispatchKeyboardMessage(const WPARAM wParam, const LPARAM /*lParam*/
 ChatWriter*
 CreateChatWriterForWindow(const HWND window)
 {
-  ChatWriter* chatWriter = new ChatWriter(window);
-  const Settings::ChatMessagesVector& messages = GetSettings()->ChatMessages;
-  for (Settings::ChatMessagesVector::const_iterator it = messages.begin();
-       it != messages.end();
-       ++it)
-  {
-    chatWriter->AddPhrase(it->Key, it->Text, it->Team);
-  }
-  return chatWriter;
+    ChatWriter* chatWriter = new ChatWriter(window);
+    const Settings::ChatMessagesVector& messages = GetSettings()->chatMessages;
+    for (Settings::ChatMessagesVector::const_iterator it = messages.begin(); it != messages.end();
+            ++it)
+    {
+        chatWriter->addPhrase(it->key, it->text, it->team);
+    }
+    return chatWriter;
 }
 
 //-----------------------------------------------------------------------------

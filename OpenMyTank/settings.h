@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -29,248 +28,246 @@ struct Settings
 {
 public:
 
-  unsigned  ClickersDelay;
+    unsigned clickersDelay;
 
-  std::string  Language;
+    std::string language;
 
-  UINT32 WindowState;
-  RECT MainWindowRect;
+    UINT32 windowState;
+    RECT mainWindowRect;
 
-  tstring ScreenshotPath;  //  without '\' at end
-  tstring ScreenshotDateFormat;
-  tstring ScreenshotTimeFormat;
-  tstring ScreenshotFormat;
-  unsigned JpegQuality;
-  bool BeepOnScreenshot;
+    tstring screenshotPath;  //  without '\' at end
+    tstring screenshotDateFormat;
+    tstring screenshotTimeFormat;
+    tstring screenshotFormat;
+    unsigned jpegQuality;
+    bool beepOnScreenshot;
 
-  struct ChatMessage
-  {
-    enum { MaxTextSizeWithNull = 299 + 1 };
-    UINT Key;
-    tstring Text;
-    bool Team;
-    ChatMessage()
+    struct ChatMessage
     {
-    }
-    ChatMessage(const UINT key, const tstring& text, const bool team)
-      : Key(key), Text(text), Team(team)
-    {
-    }
-    bool operator==(const ChatMessage& rhs) const
-    {
-      return bool(Key == rhs.Key && Text == rhs.Text && Team == rhs.Team);
-    }
-
-  };
-  typedef  std::vector<ChatMessage>  ChatMessagesVector;
-  ChatMessagesVector  ChatMessages;
-
-  unsigned SnapshotKey;
-
-  unsigned ServerButtonsCount;
-
-  static const tstring DefaultScreenshotDateFormat;
-  static const tstring DefaultScreenshotTimeFormat;
-  static const tstring DefaultScreenshotFormat;
-
-  static const unsigned DefaultJpegQuality = 90;
-  static const bool DefaultBeepOnScreenshot = true;
-
-  static const unsigned DefaultSnapshotKey = VK_SNAPSHOT;
-
-  static const unsigned DefaultServerButtonsCount = 30;
-
-  tstring Account; // slot, prefix in url
-
-  Settings()
-    : ClickersDelay(10)
-    , Language(GetDefaultLanguage())
-    , WindowState(0)
-    , ScreenshotPath(GetDefaultScreenshotPath())
-    , ScreenshotDateFormat(DefaultScreenshotDateFormat)
-    , ScreenshotTimeFormat(DefaultScreenshotTimeFormat)
-    , ScreenshotFormat(DefaultScreenshotFormat)
-    , JpegQuality(DefaultJpegQuality)
-    , BeepOnScreenshot(DefaultBeepOnScreenshot)
-    , SnapshotKey(DefaultSnapshotKey)
-    , ServerButtonsCount(DefaultServerButtonsCount)
-  {
-    MainWindowRect.left = MainWindowRect.right = 0;
-    MainWindowRect.top = MainWindowRect.bottom = 0;
-
-    ChatMessages.push_back(ChatMessage(VK_F1, GetString(IDS_F1_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F2, GetString(IDS_F2_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F3, GetString(IDS_F3_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F4, GetString(IDS_F4_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F5, GetString(IDS_F5_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F6, GetString(IDS_F6_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F7, GetString(IDS_F7_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F8, GetString(IDS_F8_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F9, GetString(IDS_F9_MESSAGE), true));
-    ChatMessages.push_back(ChatMessage(VK_F10, GetString(IDS_F10_MESSAGE), false));
-
-    {
-      std::ifstream file(AccountsFileMame);
-      ReadString(file, Account);
-    }
-    if (Account.empty())
-    {
-      std::srand(unsigned(time(NULL)));
-      for (int i = 6 + std::rand() % 5; i >= 0; --i)
-      {
-        switch (rand() % 3)
+        enum
         {
-          case 0: Account += (TEXT('0') + rand() % (TEXT('9') - TEXT('0') + 1)); break;
-          case 1: Account += (TEXT('A') + rand() % (TEXT('Z') - TEXT('A') + 1)); break;
-          case 2: Account += (TEXT('a') + rand() % (TEXT('z') - TEXT('a') + 1)); break;
-        }
-      }
-      std::ofstream file(AccountsFileMame, std::fstream::trunc);
-      file << TCharToOem(Account) << std::endl;
-    }
-  }
-
-  bool operator!=(const Settings& other) const
-  {
-    return bool(ClickersDelay != other.ClickersDelay
-                || Language != other.Language
-                // WindowState and MainWindowRect are not compared
-                || ScreenshotPath != other.ScreenshotPath
-                || ScreenshotDateFormat != other.ScreenshotDateFormat
-                || ScreenshotTimeFormat != other.ScreenshotTimeFormat
-                || ScreenshotFormat != other.ScreenshotFormat
-                || JpegQuality != other.JpegQuality
-                || BeepOnScreenshot != other.BeepOnScreenshot
-                || ChatMessages != other.ChatMessages
-                || SnapshotKey != other.SnapshotKey
-                || ServerButtonsCount != other.ServerButtonsCount);
-  }
-
-  void ResetToDefault()
-  {
-  }
-
-  void Load()
-  {
-    std::ifstream file(SettingsFileMame);
-    bool broken = true;
-    if (file)
-    {
-      std::time_t lastUpdateCheck; // deprecated
-      std::time_t updateChecksPeriod; // deprecated
-      file >> lastUpdateCheck;
-      file >> updateChecksPeriod;
-      file >> ClickersDelay;
-      file >> Language;
-      file >> WindowState;
-      file >> MainWindowRect.left
-           >> MainWindowRect.top
-           >> MainWindowRect.right
-           >> MainWindowRect.bottom;
-      ReadString(file, ScreenshotPath);
-      ReadString(file, ScreenshotDateFormat);
-      ReadString(file, ScreenshotTimeFormat);
-      ReadString(file, ScreenshotFormat);
-      file >> JpegQuality;
-      file >> BeepOnScreenshot;
-      unsigned availableButtons; // deprecated
-      file >> availableButtons;
-
-      int messagesCount;
-      file >> messagesCount;
-      if (!file.fail()) // from previous version don't clear new default messages
-      {
-        ChatMessages.clear();
-        for (int i = 0; i < messagesCount; ++i)
+            MaxTextSizeWithNull = 299 + 1
+        };
+        UINT key;
+        tstring text;
+        bool team;
+        ChatMessage()
         {
-          ChatMessage message;
-          file >> message.Key;
-          ReadString(file, message.Text);
-          file >> message.Team;
-          ChatMessages.push_back(message);
         }
-      }
+        ChatMessage(const UINT key, const tstring& text, const bool team)
+            : key(key), text(text), team(team)
+        {
+        }
+        bool operator==(const ChatMessage& rhs) const
+        {
+            return bool(key == rhs.key && text == rhs.text && team == rhs.team);
+        }
 
-      file >> SnapshotKey;
-      file >> ServerButtonsCount;
+    };
+    typedef std::vector<ChatMessage> ChatMessagesVector;
+    ChatMessagesVector chatMessages;
 
-      broken = file.fail();
-      file.close();
-    }
-    if (broken)
+    unsigned snapshotKey;
+
+    unsigned serverButtonsCount;
+
+    static const tstring DefaultScreenshotDateFormat;
+    static const tstring DefaultScreenshotTimeFormat;
+    static const tstring DefaultScreenshotFormat;
+
+    static const unsigned DefaultJpegQuality = 90;
+    static const bool DefaultBeepOnScreenshot = true;
+
+    static const unsigned DefaultSnapshotKey = VK_SNAPSHOT;
+
+    static const unsigned DefaultServerButtonsCount = 30;
+
+    tstring account; // slot, prefix in url
+
+    Settings()
+        : clickersDelay(10), language(GetDefaultLanguage()), windowState(0)
+        , screenshotPath(GetDefaultScreenshotPath())
+        , screenshotDateFormat(DefaultScreenshotDateFormat)
+        , screenshotTimeFormat(DefaultScreenshotTimeFormat)
+        , screenshotFormat(DefaultScreenshotFormat), jpegQuality(DefaultJpegQuality)
+        , beepOnScreenshot(DefaultBeepOnScreenshot), snapshotKey(DefaultSnapshotKey)
+        , serverButtonsCount(DefaultServerButtonsCount)
     {
-      Save();
+        mainWindowRect.left = mainWindowRect.right = 0;
+        mainWindowRect.top = mainWindowRect.bottom = 0;
+
+        chatMessages.push_back(ChatMessage(VK_F1, GetString(IDS_F1_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F2, GetString(IDS_F2_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F3, GetString(IDS_F3_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F4, GetString(IDS_F4_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F5, GetString(IDS_F5_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F6, GetString(IDS_F6_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F7, GetString(IDS_F7_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F8, GetString(IDS_F8_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F9, GetString(IDS_F9_MESSAGE), true));
+        chatMessages.push_back(ChatMessage(VK_F10, GetString(IDS_F10_MESSAGE), false));
+
+        {
+            std::ifstream file(AccountsFileMame);
+            readString(file, account);
+        }
+        if (account.empty())
+        {
+            std::srand(unsigned(time(NULL)));
+            for (int i = 6 + std::rand() % 5; i >= 0; --i)
+            {
+                switch (rand() % 3)
+                {
+                    case 0:
+                        account += (TEXT('0') + rand() % (TEXT('9') - TEXT('0') + 1));
+                        break;
+                    case 1:
+                        account += (TEXT('A') + rand() % (TEXT('Z') - TEXT('A') + 1));
+                        break;
+                    case 2:
+                        account += (TEXT('a') + rand() % (TEXT('z') - TEXT('a') + 1));
+                        break;
+                }
+            }
+            std::ofstream file(AccountsFileMame, std::fstream::trunc);
+            file << TCharToOem(account) << std::endl;
+        }
     }
-  }
 
-  void Save()
-  {
-    std::ofstream file(SettingsFileMame, std::fstream::trunc);
-    std::time_t lastUpdateCheck(0); // deprecated
-    std::time_t updateChecksPeriod(0); // deprecated
-    file << lastUpdateCheck << std::endl;
-    file << updateChecksPeriod << std::endl;
-    file << ClickersDelay << std::endl;
-    file << Language << std::endl;
-    file << WindowState << std::endl;
-    file << MainWindowRect.left   << std::endl
-         << MainWindowRect.top    << std::endl
-         << MainWindowRect.right  << std::endl
-         << MainWindowRect.bottom << std::endl;
-    file << TCharToOem(ScreenshotPath) << std::endl;
-    file << TCharToOem(ScreenshotDateFormat) << std::endl;
-    file << TCharToOem(ScreenshotTimeFormat) << std::endl;
-    file << TCharToOem(ScreenshotFormat) << std::endl;
-    file << JpegQuality << std::endl;
-    file << BeepOnScreenshot << std::endl;
-    unsigned availableButtons(0); // deprecated
-    file << availableButtons << std::endl;
-
-    file << ChatMessages.size() << std::endl;
-    for (ChatMessagesVector::const_iterator it = ChatMessages.begin();
-         it != ChatMessages.end();
-         ++it)
+    bool operator!=(const Settings& other) const
     {
-      file << it->Key << std::endl;
-      file << TCharToOem(it->Text) << std::endl;
-      file << it->Team << std::endl;
+        return bool(clickersDelay != other.clickersDelay || language != other.language
+                    // WindowState and MainWindowRect are not compared
+                    || screenshotPath != other.screenshotPath
+                    || screenshotDateFormat != other.screenshotDateFormat
+                    || screenshotTimeFormat != other.screenshotTimeFormat
+                    || screenshotFormat != other.screenshotFormat
+                    || jpegQuality != other.jpegQuality
+                    || beepOnScreenshot != other.beepOnScreenshot
+                    || chatMessages != other.chatMessages || snapshotKey != other.snapshotKey
+                    || serverButtonsCount != other.serverButtonsCount);
     }
 
-    file << SnapshotKey << std::endl;
-    file << ServerButtonsCount << std::endl;
-  }
-
-  void SaveCurrentWindowRect(const HWND window)
-  {
-    RECT rect;
-    if (::GetWindowRect(window, &rect))
+    void resetToDefault()
     {
-      MainWindowRect = rect;
     }
-  }
+
+    void load()
+    {
+        std::ifstream file(SettingsFileMame);
+        bool broken = true;
+        if (file)
+        {
+            std::time_t lastUpdateCheck; // deprecated
+            std::time_t updateChecksPeriod; // deprecated
+            file >> lastUpdateCheck;
+            file >> updateChecksPeriod;
+            file >> clickersDelay;
+            file >> language;
+            file >> windowState;
+            file >> mainWindowRect.left >> mainWindowRect.top >> mainWindowRect.right
+                 >> mainWindowRect.bottom;
+            readString(file, screenshotPath);
+            readString(file, screenshotDateFormat);
+            readString(file, screenshotTimeFormat);
+            readString(file, screenshotFormat);
+            file >> jpegQuality;
+            file >> beepOnScreenshot;
+            unsigned availableButtons; // deprecated
+            file >> availableButtons;
+
+            int messagesCount;
+            file >> messagesCount;
+            if (!file.fail()) // from previous version don't clear new default messages
+            {
+                chatMessages.clear();
+                for (int i = 0; i < messagesCount; ++i)
+                {
+                    ChatMessage message;
+                    file >> message.key;
+                    readString(file, message.text);
+                    file >> message.team;
+                    chatMessages.push_back(message);
+                }
+            }
+
+            file >> snapshotKey;
+            file >> serverButtonsCount;
+
+            broken = file.fail();
+            file.close();
+        }
+        if (broken)
+        {
+            save();
+        }
+    }
+
+    void save()
+    {
+        std::ofstream file(SettingsFileMame, std::fstream::trunc);
+        std::time_t lastUpdateCheck(0); // deprecated
+        std::time_t updateChecksPeriod(0); // deprecated
+        file << lastUpdateCheck << std::endl;
+        file << updateChecksPeriod << std::endl;
+        file << clickersDelay << std::endl;
+        file << language << std::endl;
+        file << windowState << std::endl;
+        file << mainWindowRect.left << std::endl << mainWindowRect.top << std::endl
+             << mainWindowRect.right << std::endl << mainWindowRect.bottom << std::endl;
+        file << TCharToOem(screenshotPath) << std::endl;
+        file << TCharToOem(screenshotDateFormat) << std::endl;
+        file << TCharToOem(screenshotTimeFormat) << std::endl;
+        file << TCharToOem(screenshotFormat) << std::endl;
+        file << jpegQuality << std::endl;
+        file << beepOnScreenshot << std::endl;
+        unsigned availableButtons(0); // deprecated
+        file << availableButtons << std::endl;
+
+        file << chatMessages.size() << std::endl;
+        for (ChatMessagesVector::const_iterator it = chatMessages.begin(); it != chatMessages.end();
+                ++it)
+        {
+            file << it->key << std::endl;
+            file << TCharToOem(it->text) << std::endl;
+            file << it->team << std::endl;
+        }
+
+        file << snapshotKey << std::endl;
+        file << serverButtonsCount << std::endl;
+    }
+
+    void saveCurrentWindowRect(const HWND window)
+    {
+        RECT rect;
+        if (::GetWindowRect(window, &rect))
+        {
+            mainWindowRect = rect;
+        }
+    }
 
 private:
 
-  void SkipAllReturs(std::ifstream& file) const
-  {
-    while (file.peek() == '\r' || file.peek() == '\n')
+    void skipAllReturs(std::ifstream& file) const
     {
-      file.get();
+        while (file.peek() == '\r' || file.peek() == '\n')
+        {
+            file.get();
+        }
     }
-  }
 
-  bool ReadString(std::ifstream& file, tstring& value) const
-  {
-    std::string line;
-    SkipAllReturs(file);
-    std::getline(file, line);
-    if (!file.fail())
+    bool readString(std::ifstream& file, tstring& value) const
     {
-      value = OemToTChar(line);
-      return true;
+        std::string line;
+        skipAllReturs(file);
+        std::getline(file, line);
+        if (!file.fail())
+        {
+            value = OemToTChar(line);
+            return true;
+        }
+        return false;
     }
-    return false;
-  }
 
 };
 

@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -20,34 +19,34 @@ class UrlManager
 {
 public:
 
-  UrlManager(CONST TCHAR*CONST commandLineArgument);
+    UrlManager(CONST TCHAR*CONST commandLineArgument);
 
-  tstring GetServerLink(const unsigned serverNumber) const;
+    tstring getServerLink(const unsigned serverNumber) const;
 
-  tstring GetAccountCoockieName() const;
+    tstring getAccountCoockieName() const;
 
-  bool HasAccount() const;
+    bool hasAccount() const;
 
-  tstring ToMyUrl(const tstring& publicUrl) const;
-  tstring ToPublicUrl(const tstring& myUrl) const;
+    tstring toMyUrl(const tstring& publicUrl) const;
+    tstring toPublicUrl(const tstring& myUrl) const;
 
-  static unsigned ExtractServerNumber(const tstring& url);
+    static unsigned extractServerNumber(const tstring& url);
 
-  static bool IsValidUrl(const tstring& url);
+    static bool isValidUrl(const tstring& url);
 
-  static tstring SetMyLanguage(const tstring& url);
+    static tstring setMyLanguage(const tstring& url);
 
 private:
 
-  tstring FrontPart;
-  const tstring MiddlePart;
+    tstring frontPart;
+    const tstring middlePart;
 
-  tstring MySlot;
-  tstring MySlotPoint;
+    tstring mySlot;
+    tstring mySlotPoint;
 
-  tstring AccountCoockieName;
+    tstring accountCoockieName;
 
-  static const tstring TankiOnlineServer;
+    static const tstring TankiOnlineServer;
 };
 
 //-----------------------------------------------------------------------------
@@ -66,6 +65,6 @@ unsigned GetNumberOfServers();
 
 //-----------------------------------------------------------------------------
 
-} // namespace TO
+}// namespace TO
 
 //-----------------------------------------------------------------------------

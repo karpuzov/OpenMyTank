@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
@@ -38,7 +37,7 @@ bool IsMenuVisible = true;
 std::auto_ptr<Gui::Button> GetUrlButton;
 std::auto_ptr<Gui::Button> OpenUrlButton;
 
-std::vector<Gui::Button*>  ServerButtons;
+std::vector<Gui::Button*> ServerButtons;
 static Gui::Button* PrevButton = NULL;
 
 std::auto_ptr<Gui::Button> LeftPlayButton;
@@ -57,10 +56,10 @@ std::auto_ptr<TO::UrlManager> BattleUrl;
 
 std::auto_ptr<ClipboardManager> Clipboard;
 
-std::auto_ptr<KeyboardHook>  KeyboardHooker;
-std::auto_ptr<MouseHook>  MouseHooker;
+std::auto_ptr<KeyboardHook> KeyboardHooker;
+std::auto_ptr<MouseHook> MouseHooker;
 
-std::auto_ptr<ScreenshoterThread>  Screenshot;
+std::auto_ptr<ScreenshoterThread> Screenshot;
 
 std::auto_ptr<ClickerThread> Clicker;
 volatile bool BattleIsStarted = false;
@@ -69,94 +68,100 @@ volatile bool BattleIsStarted = false;
 
 RECT GetRectForFlash()
 {
-  RECT rect;
-  ::GetClientRect(MainWindow, &rect);
+    RECT rect;
+    ::GetClientRect(MainWindow, &rect);
 
-  //rect.left  += 1;
-  rect.right -= 1/* + 1*/;
+    //rect.left  += 1;
+    rect.right -= 1/* + 1*/;
 
-  if (IsMenuVisible)
-  {
-    rect.top += Gui::GetMenuHeight();
-  }
-  rect.bottom -= 1/* + 1*/;
+    if (IsMenuVisible)
+    {
+        rect.top += Gui::GetMenuHeight();
+    }
+    rect.bottom -= 1/* + 1*/;
 
-  return rect;
+    return rect;
 }
 
 //-----------------------------------------------------------------------------
 
 void UpdateWidgetPositions()
 {
-  const RECT rect = GetRectForFlash();
+    const RECT rect = GetRectForFlash();
 
-  POINT point = {rect.right - (5 - 1) - FullScreenButton->GetSize().cx, 5};
-  FullScreenButton->Move(point);
-  point.x -= (RightPlayButton->GetSize().cx + 5);
-  RightPlayButton->Move(point);
-  point.x -= (LeftPlayButton->GetSize().cx + 2);
-  LeftPlayButton->Move(point);
+    POINT point =
+    { rect.right - (5 - 1) - FullScreenButton->getSize().cx, 5 };
+    FullScreenButton->move(point);
+    point.x -= (RightPlayButton->getSize().cx + 5);
+    RightPlayButton->move(point);
+    point.x -= (LeftPlayButton->getSize().cx + 2);
+    LeftPlayButton->move(point);
 
-  const int serverButtons = ServerButtons.size();
-  const int availableLeft = OpenUrlButton->GetPoint().x + OpenUrlButton->GetSize().cx + 5;
-  const int buttonOffset = 2;
-  const int availableWidth = point.x - (availableLeft) - (5 - buttonOffset);
-  const int buttonWidth = availableWidth / serverButtons - buttonOffset;
-  const int buttonHeight = 20;
-  const int increasedButtons = availableWidth - ((buttonWidth + buttonOffset) * serverButtons);
-  int x = availableLeft;
-  for (int i = 0; i < serverButtons; ++i)
-  {
-    Gui::Button*const button = ServerButtons[i];
-    const int thisButtonWidth = (i + increasedButtons >= serverButtons) ? (buttonWidth + 1) : (buttonWidth);
-    button->SetRect(MakeRECT(MakePOINT(x, 5), MakeSIZE(thisButtonWidth, buttonHeight)));
-    x += (thisButtonWidth + buttonOffset);
-  }
+    const int serverButtons = ServerButtons.size();
+    const int availableLeft = OpenUrlButton->getPoint().x + OpenUrlButton->getSize().cx + 5;
+    const int buttonOffset = 2;
+    const int availableWidth = point.x - (availableLeft) - (5 - buttonOffset);
+    const int buttonWidth = availableWidth / serverButtons - buttonOffset;
+    const int buttonHeight = 20;
+    const int increasedButtons = availableWidth - ((buttonWidth + buttonOffset) * serverButtons);
+    int x = availableLeft;
+    for (int i = 0; i < serverButtons; ++i)
+    {
+        Gui::Button* const button = ServerButtons[i];
+        const int thisButtonWidth =
+                (i + increasedButtons >= serverButtons) ? (buttonWidth + 1) : (buttonWidth);
+        button->setRect(MakeRECT(MakePOINT(x, 5), MakeSIZE(thisButtonWidth, buttonHeight)));
+        x += (thisButtonWidth + buttonOffset);
+    }
 
-  if (FlashPlayer.get() != NULL)
-  {
-    FlashPlayer->MoveWindow(rect);
-  }
+    if (FlashPlayer.get() != NULL)
+    {
+        FlashPlayer->moveWindow(rect);
+    }
 
-  if (AboutWindow.get() != NULL)
-  {
-    AboutWindow->UpdateSize();
-  }
+    if (AboutWindow.get() != NULL)
+    {
+        AboutWindow->updateSize();
+    }
 
-  if (LeftClickerWindow.get() != NULL)
-  {
-    const RECT rc = TO::GetLeftClickerWindowRect(FlashPlayer->GetSize());
-    ::MoveWindow(LeftClickerWindow->GetHwnd(), rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, TRUE);
-  }
-  if (RightClickerWindow.get() != NULL)
-  {
-    const RECT rc = TO::GetRightClickerWindowRect(FlashPlayer->GetSize());
-    ::MoveWindow(RightClickerWindow->GetHwnd(), rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, TRUE);
-  }
+    if (LeftClickerWindow.get() != NULL)
+    {
+        const RECT rc = TO::GetLeftClickerWindowRect(FlashPlayer->getSize());
+        ::MoveWindow(LeftClickerWindow->getHwnd(), rc.left, rc.top, rc.right - rc.left,
+                rc.bottom - rc.top, TRUE);
+    }
+    if (RightClickerWindow.get() != NULL)
+    {
+        const RECT rc = TO::GetRightClickerWindowRect(FlashPlayer->getSize());
+        ::MoveWindow(RightClickerWindow->getHwnd(), rc.left, rc.top, rc.right - rc.left,
+                rc.bottom - rc.top, TRUE);
+    }
 
-  ::RedrawWindow(MainWindow, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
+    ::RedrawWindow(MainWindow, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
 }
 
 //-----------------------------------------------------------------------------
 
 POINT GetMinSizeOfMainWindow()
 {
-  static POINT MinSizeOfMainWindow = {0, 0};
+    static POINT MinSizeOfMainWindow =
+    { 0, 0 };
 
-  if (MinSizeOfMainWindow.x == 0)
-  {
-    RECT rc = {0};
-    ::AdjustWindowRectEx(&rc,
-                         Gui::GetMainWindowGwlStyle(),  //  ::GetWindowLong(MainWindow, GWL_STYLE),
-                         FALSE,                    //(BOOL)::GetMenu(MainWindow),
-                         0                         //::GetWindowLong(MainWindow, GWL_EXSTYLE)
-                        );
+    if (MinSizeOfMainWindow.x == 0)
+    {
+        RECT rc =
+        { 0 };
+        ::AdjustWindowRectEx(&rc, Gui::GetMainWindowGwlStyle(), //  ::GetWindowLong(MainWindow, GWL_STYLE),
+                FALSE,                    //(BOOL)::GetMenu(MainWindow),
+                0                         //::GetWindowLong(MainWindow, GWL_EXSTYLE)
+                );
 
-    MinSizeOfMainWindow.x = TO::MinimumPlayerSize().cx + (-rc.left) + rc.right;
-    MinSizeOfMainWindow.y = TO::MinimumPlayerSize().cy + (-rc.top) + rc.bottom + Gui::GetMenuHeight();
-  }
+        MinSizeOfMainWindow.x = TO::MinimumPlayerSize().cx + (-rc.left) + rc.right;
+        MinSizeOfMainWindow.y = TO::MinimumPlayerSize().cy + (-rc.top) + rc.bottom
+                + Gui::GetMenuHeight();
+    }
 
-  return MinSizeOfMainWindow;
+    return MinSizeOfMainWindow;
 }
 
 //-----------------------------------------------------------------------------
@@ -165,575 +170,588 @@ POINT GetMinSizeOfMainWindow()
 
 static void CorrectMyUserAgent()
 {
-  DWORD dw;
-  char buf[1024] = {'\0'};
-  ::UrlMkGetSessionOption(URLMON_OPTION_USERAGENT, buf, sizeof(buf)/sizeof(buf[0]), &dw, 0);
+    DWORD dw;
+    char buf[1024] =
+    { '\0' };
+    ::UrlMkGetSessionOption(URLMON_OPTION_USERAGENT, buf, sizeof(buf) / sizeof(buf[0]), &dw, 0);
 
-  char*const str = std::strstr(buf, "MSIE ");
-  if (str != NULL)
-  {
-    str[5] = '8';
-    ::UrlMkSetSessionOption(URLMON_OPTION_USERAGENT, buf, dw, 0);
-  }
+    char* const str = std::strstr(buf, "MSIE ");
+    if (str != NULL)
+    {
+        str[5] = '8';
+        ::UrlMkSetSessionOption(URLMON_OPTION_USERAGENT, buf, dw, 0);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
-int APIENTRY _tWinMain(HINSTANCE instance,
-                       HINSTANCE /*hPrevInstance*/,
-                       LPTSTR    commandLine,
-                       int       /*nCmdShow*/)
+int APIENTRY _tWinMain(
+    HINSTANCE instance, HINSTANCE /*hPrevInstance*/, LPTSTR commandLine, int /*nCmdShow*/)
 {
-  Instance = instance;
+    Instance = instance;
 
-  ForAutoupdate();
+    ForAutoupdate();
 
-  BattleUrl.reset(new TO::UrlManager(commandLine));
-  WindowTitle = new Gui::WindowTitle(commandLine);
+    BattleUrl.reset(new TO::UrlManager(commandLine));
+    WindowTitle = new Gui::WindowTitle(commandLine);
 
-  ::CoInitialize(NULL);
-  ::AtlAxWinInit();
+    ::CoInitialize(NULL);
+    ::AtlAxWinInit();
 
-  if (!CreateAndShowMainWindow())
-  {
-    return FALSE;
-  }
+    if (!CreateAndShowMainWindow())
+    {
+        return FALSE;
+    }
 
-  KeyboardHooker.reset(new KeyboardHook());
+    KeyboardHooker.reset(new KeyboardHook());
 
-  CorrectMyUserAgent();
+    CorrectMyUserAgent();
 
-  MSG msg;
+    MSG msg;
 
-  while (::GetMessage(&msg, NULL, 0, 0))
-  {
-    ::TranslateMessage(&msg);
-    ::DispatchMessage(&msg);
-  }
+    while (::GetMessage(&msg, NULL, 0, 0))
+    {
+        ::TranslateMessage(&msg);
+        ::DispatchMessage(&msg);
+    }
 
-  for (std::vector<Gui::Button*>::const_iterator it = ServerButtons.begin();
-       it != ServerButtons.end();
-       ++it)
-  {
-    delete *it;
-  }
+    for (std::vector<Gui::Button*>::const_iterator it = ServerButtons.begin();
+            it != ServerButtons.end(); ++it)
+    {
+        delete *it;
+    }
 
-  ::UnregisterClass(Gui::GetWindowClassName(), Instance);
+    ::UnregisterClass(Gui::GetWindowClassName(), Instance);
 
-  ::CoUninitialize();
+    ::CoUninitialize();
 
-  KeyboardHooker.reset();
-  MouseHooker.reset();
-  Screenshot.reset();
+    KeyboardHooker.reset();
+    MouseHooker.reset();
+    Screenshot.reset();
 
-  delete WindowTitle;
+    delete WindowTitle;
 
-  return (int)msg.wParam;
+    return (int)msg.wParam;
 }
 
 //-----------------------------------------------------------------------------
 
 bool CreateAndShowMainWindow()
 {
-  WNDCLASSEX wcex;
-  wcex.cbSize = sizeof(WNDCLASSEX);
+    WNDCLASSEX wcex;
+    wcex.cbSize = sizeof(WNDCLASSEX);
 
-  wcex.style		= CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
-  wcex.lpfnWndProc	= WndProc;
-  wcex.cbClsExtra	= 0;
-  wcex.cbWndExtra	= 0;
-  wcex.hInstance	= Instance;
-  wcex.hIcon		= ::LoadIcon(Instance, MAKEINTRESOURCE(IDI_FAVICON));
-  wcex.hCursor		= ::LoadCursor(0, IDC_ARROW);
-  wcex.hbrBackground	= (HBRUSH)::CreateSolidBrush(0x0D220C);
-  wcex.lpszMenuName	= NULL;
-  wcex.lpszClassName	= Gui::GetWindowClassName();
-  wcex.hIconSm		= wcex.hIcon;
+    wcex.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = Instance;
+    wcex.hIcon = ::LoadIcon(Instance, MAKEINTRESOURCE(IDI_FAVICON));
+    wcex.hCursor = ::LoadCursor(0, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)::CreateSolidBrush(0x0D220C);
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = Gui::GetWindowClassName();
+    wcex.hIconSm = wcex.hIcon;
 
-  if (::RegisterClassEx(&wcex) == 0)
-  {
-    return false;
-  }
+    if (::RegisterClassEx(&wcex) == 0)
+    {
+        return false;
+    }
 
-  RECT rect = GetSettings()->MainWindowRect;
-  if ((rect.left == 0 && rect.right == 0) || rect.right < 0 || rect.bottom < 0) // check negativ values for fix bug
-  {
-    CONST POINT windowSize = GetMinSizeOfMainWindow();
-    rect.left = (::GetSystemMetrics(SM_CXSCREEN) - windowSize.x) / 2;
-    rect.top = (::GetSystemMetrics(SM_CYSCREEN) - windowSize.y) / 2;
-    rect.right = rect.left + windowSize.x;
-    rect.bottom = rect.top + windowSize.y;
-  }
-  MainWindow = ::CreateWindow(Gui::GetWindowClassName(),
-                              WindowTitle->Get(),
-                              Gui::GetMainWindowGwlStyle(),
-                              rect.left,
-                              rect.top,
-                              rect.right - rect.left/* + 1*/,
-                              rect.bottom - rect.top/* + 1*/,
-                              NULL,
-                              NULL,
-                              Instance,
-                              NULL);
+    RECT rect = GetSettings()->mainWindowRect;
+    if ((rect.left == 0 && rect.right == 0) || rect.right < 0 || rect.bottom < 0) // check negativ values for fix bug
+    {
+        CONST POINT windowSize = GetMinSizeOfMainWindow();
+        rect.left = (::GetSystemMetrics(SM_CXSCREEN) - windowSize.x) / 2;
+        rect.top = (::GetSystemMetrics(SM_CYSCREEN) - windowSize.y) / 2;
+        rect.right = rect.left + windowSize.x;
+        rect.bottom = rect.top + windowSize.y;
+    }
+    MainWindow = ::CreateWindow(Gui::GetWindowClassName(),
+            WindowTitle->get(),
+            Gui::GetMainWindowGwlStyle(),
+            rect.left,
+            rect.top,
+            rect.right - rect.left/* + 1*/,
+            rect.bottom - rect.top/* + 1*/,
+            NULL,
+            NULL,
+            Instance,
+            NULL);
 
-  if (MainWindow == NULL)
-  {
-    return false;
-  }
+    if (MainWindow == NULL)
+    {
+        return false;
+    }
 
-  ::ShowWindow(MainWindow, (GetSettings()->WindowState & 0x1) ? (SW_SHOWMAXIMIZED) : (SW_SHOW));
-  ::UpdateWindow(MainWindow);
-  ::SetForegroundWindow(MainWindow);
+    ::ShowWindow(MainWindow, (GetSettings()->windowState & 0x1) ? (SW_SHOWMAXIMIZED) : (SW_SHOW));
+    ::UpdateWindow(MainWindow);
+    ::SetForegroundWindow(MainWindow);
 
-  if (GetSettings()->WindowState & 0x2)
-  {
-    FullScreenButton->Click();
-  }
+    if (GetSettings()->windowState & 0x2)
+    {
+        FullScreenButton->click();
+    }
 
-  return true;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
 void LoadUrl(const tstring& newUrl = tstring())
 {
-  Clicker.reset();
-  LeftClickerWindow.reset();
-  RightClickerWindow.reset();
+    Clicker.reset();
+    LeftClickerWindow.reset();
+    RightClickerWindow.reset();
 
-  LeftPlayButton->SetChecked(false);
-  RightPlayButton->SetChecked(false);
+    LeftPlayButton->setChecked(false);
+    RightPlayButton->setChecked(false);
 
-  OpenUrlButton->SetEnabled(true);
+    OpenUrlButton->setEnabled(true);
 
-  ::SendMessage(MainWindow, WM_ACTIVATE, (WPARAM)WA_CLICKACTIVE, (LPARAM)MainWindow);
+    ::SendMessage(MainWindow, WM_ACTIVATE, (WPARAM)WA_CLICKACTIVE, (LPARAM)MainWindow);
 
-  if (newUrl.empty())
-  {
-    FlashPlayer.reset();
-
-    if (AboutWindow.get() == NULL)
+    if (newUrl.empty())
     {
-      AboutWindow.reset(new Gui::AboutWindow(MainWindow));
+        FlashPlayer.reset();
+
+        if (AboutWindow.get() == NULL)
+        {
+            AboutWindow.reset(new Gui::AboutWindow(MainWindow));
+        }
+
+        GetUrlButton->setEnabled(false);
+        PrevButton->setChecked(false);
+        PrevButton = NULL;
+
+        ::SetWindowText(MainWindow, WindowTitle->setActiveServer());
+    }
+    else
+    {
+        AboutWindow.reset();
+
+        try
+        {
+            FlashPlayer.reset();  // without it c-tor of new will be runned before d-tor last
+            FlashPlayer.reset(new Flash::PlayerWindow(MainWindow, newUrl.c_str()));
+            GetUrlButton->setEnabled(true);
+            LeftPlayButton->setEnabled(true);
+            RightPlayButton->setEnabled(true);
+        }
+        catch (const TCHAR* text)
+        {
+            ::MessageBox(MainWindow, text, ProgramTitle, MB_OK | MB_ICONERROR);
+        }
+
+        ::SetWindowText(MainWindow,
+                WindowTitle->setActiveServer(TO::UrlManager::extractServerNumber(newUrl)));
     }
 
-    GetUrlButton->SetEnabled(false);
-    PrevButton->SetChecked(false);
-    PrevButton = NULL;
-
-    ::SetWindowText(MainWindow, WindowTitle->SetActiveServer());
-  }
-  else
-  {
-    AboutWindow.reset();
-
-    try
-    {
-      FlashPlayer.reset();  // without it c-tor of new will be runned before d-tor last
-      FlashPlayer.reset(new Flash::PlayerWindow(MainWindow, newUrl.c_str()));
-      GetUrlButton->SetEnabled(true);
-      LeftPlayButton->SetEnabled(true);
-      RightPlayButton->SetEnabled(true);
-    }
-    catch (const TCHAR* text)
-    {
-      ::MessageBox(MainWindow, text, ProgramTitle, MB_OK | MB_ICONERROR);
-    }
-
-    ::SetWindowText(MainWindow, WindowTitle->SetActiveServer(TO::UrlManager::ExtractServerNumber(newUrl)));
-  }
-
-  UpdateWidgetPositions();
+    UpdateWidgetPositions();
 }
 
 //-----------------------------------------------------------------------------
 
 void SaveScreenshot()
 {
-  if (FlashPlayer.get() != NULL)
-  {
-    const HWND hwnd = FlashPlayer->GetFlashHwnd();
-    if (hwnd != NULL)
+    if (FlashPlayer.get() != NULL)
     {
-      if (Screenshot.get() == NULL)
-      {
-        Screenshot.reset(new ScreenshoterThread(hwnd,
-            GetSettings()->ScreenshotPath.c_str(),
-            GetSettings()->ScreenshotDateFormat.c_str(),
-            GetSettings()->ScreenshotTimeFormat.c_str(),
-            GetSettings()->ScreenshotFormat.c_str(),
-            GetSettings()->JpegQuality,
-            GetSettings()->BeepOnScreenshot,
-            MainWindow));
-        Screenshot->Start();
-      }
+        const HWND hwnd = FlashPlayer->getFlashHwnd();
+        if (hwnd != NULL)
+        {
+            if (Screenshot.get() == NULL)
+            {
+                Screenshot.reset(
+                        new ScreenshoterThread(hwnd, GetSettings()->screenshotPath.c_str(),
+                                GetSettings()->screenshotDateFormat.c_str(),
+                                GetSettings()->screenshotTimeFormat.c_str(),
+                                GetSettings()->screenshotFormat.c_str(), GetSettings()->jpegQuality,
+                                GetSettings()->beepOnScreenshot, MainWindow));
+                Screenshot->start();
+            }
+        }
     }
-  }
 }
 
 //-----------------------------------------------------------------------------
 
 void ToggleMenuVisible()
 {
-  if (FlashPlayer.get() != NULL)
-  {
-    IsMenuVisible = !IsMenuVisible;
-    UpdateWidgetPositions();
-  }
+    if (FlashPlayer.get() != NULL)
+    {
+        IsMenuVisible = !IsMenuVisible;
+        UpdateWidgetPositions();
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 void ToggleFullScreenMode()
 {
-  const RECT& windowRect = GetSettings()->MainWindowRect;
-  if (IsFullScreen) // from FullScreen:
-  {
-    MouseHooker.reset();
-
-    GetSettings()->WindowState &= ~0x2;
-    LONG style = GetWindowLong(MainWindow, GWL_STYLE);
-    style &= ~WS_POPUP;
-    style |= WS_OVERLAPPEDWINDOW;
-    ::SetWindowLong(MainWindow, GWL_STYLE, style);
-
-    if ((GetSettings()->WindowState & 0x1) != 0)
+    const RECT& windowRect = GetSettings()->mainWindowRect;
+    if (IsFullScreen) // from FullScreen:
     {
-      ::SetWindowPos(MainWindow, NULL,
-        0, 0,
-        ::GetSystemMetrics(SM_CXFULLSCREEN), ::GetSystemMetrics(SM_CYCAPTION) + ::GetSystemMetrics(SM_CYFULLSCREEN),
-        SWP_NOZORDER | SWP_FRAMECHANGED);
+        MouseHooker.reset();
+
+        GetSettings()->windowState &= ~0x2;
+        LONG style = GetWindowLong(MainWindow, GWL_STYLE);
+        style &= ~WS_POPUP;
+        style |= WS_OVERLAPPEDWINDOW;
+        ::SetWindowLong(MainWindow, GWL_STYLE, style);
+
+        if ((GetSettings()->windowState & 0x1) != 0)
+        {
+            ::SetWindowPos(MainWindow, NULL, 0, 0, ::GetSystemMetrics(SM_CXFULLSCREEN),
+                    ::GetSystemMetrics(SM_CYCAPTION) + ::GetSystemMetrics(SM_CYFULLSCREEN),
+                    SWP_NOZORDER | SWP_FRAMECHANGED);
+        }
+        else
+        {
+            ::SetWindowPos(MainWindow, NULL, windowRect.left, windowRect.top,
+                    windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
+                    SWP_NOZORDER | SWP_FRAMECHANGED);
+        }
     }
-    else
+    else // to FullScreen:
     {
-      ::SetWindowPos(MainWindow, NULL,
-        windowRect.left, windowRect.top,
-        windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
-        SWP_NOZORDER | SWP_FRAMECHANGED);
+        MouseHooker.reset(new MouseHook());
+
+        GetSettings()->windowState |= 0x2;
+        LONG style = GetWindowLong(MainWindow, GWL_STYLE);
+        style &= ~WS_OVERLAPPEDWINDOW;
+        style |= WS_POPUP;
+        ::SetWindowLong(MainWindow, GWL_STYLE, style);
+
+        if ((GetSettings()->windowState & 0x1) == 0)
+        {
+            GetSettings()->saveCurrentWindowRect(MainWindow);
+        }
+        ::SetWindowPos(MainWindow, NULL, 0, 0, ::GetSystemMetrics(SM_CXSCREEN),
+                ::GetSystemMetrics(SM_CYSCREEN),
+                SWP_NOZORDER | SWP_FRAMECHANGED);
     }
-  }
-  else // to FullScreen:
-  {
-    MouseHooker.reset(new MouseHook());
+    IsFullScreen = !IsFullScreen;
+    UpdateWidgetPositions();
 
-    GetSettings()->WindowState |= 0x2;
-    LONG style = GetWindowLong(MainWindow, GWL_STYLE);
-    style &= ~WS_OVERLAPPEDWINDOW;
-    style |= WS_POPUP;
-    ::SetWindowLong(MainWindow, GWL_STYLE, style);
-
-    if ((GetSettings()->WindowState & 0x1) == 0)
-    {
-      GetSettings()->SaveCurrentWindowRect(MainWindow);
-    }
-    ::SetWindowPos(MainWindow, NULL,
-      0, 0,
-      ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN),
-      SWP_NOZORDER | SWP_FRAMECHANGED);
-  }
-  IsFullScreen = !IsFullScreen;
-  UpdateWidgetPositions();
-
-  FullScreenButton->SetChecked(IsFullScreen);
+    FullScreenButton->setChecked(IsFullScreen);
 }
 
 //-----------------------------------------------------------------------------
 
 void OnButtonClicked(Gui::Button* button)
 {
-  if (button == FullScreenButton.get())
-  {
-    ToggleFullScreenMode();
-  }
-  else if (button == LeftPlayButton.get())
-  {
-    if (FlashPlayer.get() != NULL)
+    if (button == FullScreenButton.get())
     {
-      LeftClickerWindow.reset();
-      if (button->GetChecked())
-      {
-        if (FlashPlayer->IsBattleHappens())
-        {
-          button->SetChecked(false);
-          return;
-        }
-        LeftClickerWindow.reset(new Gui::ClickerWindow(FlashPlayer->GetFlashHwnd(),
-                                                       TO::GetLeftClickerWindowRect(FlashPlayer->GetSize()),
-                                                       LeftPlayButton.get()));
-        if (Clicker.get() == NULL)
-        {
-          Clicker.reset(new ClickerThread(MainWindow));
-          Clicker->Start();
-        }
-      }
-      Clicker->SetLeftClicker(button->GetChecked());
-      if (!Clicker->IsBusy())
-      {
-        Clicker.reset();
-      }
+        ToggleFullScreenMode();
     }
-  }
-  else if (button == RightPlayButton.get())
-  {
-    if (FlashPlayer.get() != NULL)
+    else if (button == LeftPlayButton.get())
     {
-      RightClickerWindow.reset();
-      if (button->GetChecked())
-      {
-        if (FlashPlayer->IsBattleHappens())
+        if (FlashPlayer.get() != NULL)
         {
-          button->SetChecked(false);
-          return;
+            LeftClickerWindow.reset();
+            if (button->getChecked())
+            {
+                if (FlashPlayer->isBattleHappens())
+                {
+                    button->setChecked(false);
+                    return;
+                }
+                LeftClickerWindow.reset(
+                        new Gui::ClickerWindow(FlashPlayer->getFlashHwnd(),
+                                TO::GetLeftClickerWindowRect(FlashPlayer->getSize()),
+                                LeftPlayButton.get()));
+                if (Clicker.get() == NULL)
+                {
+                    Clicker.reset(new ClickerThread(MainWindow));
+                    Clicker->start();
+                }
+            }
+            Clicker->setLeftClicker(button->getChecked());
+            if (!Clicker->isBusy())
+            {
+                Clicker.reset();
+            }
         }
-        RightClickerWindow.reset(new Gui::ClickerWindow(FlashPlayer->GetFlashHwnd(),
-                                                        TO::GetRightClickerWindowRect(FlashPlayer->GetSize()),
-                                                        RightPlayButton.get()));
-        if (Clicker.get() == NULL)
+    }
+    else if (button == RightPlayButton.get())
+    {
+        if (FlashPlayer.get() != NULL)
         {
-          Clicker.reset(new ClickerThread(MainWindow));
-          Clicker->Start();
+            RightClickerWindow.reset();
+            if (button->getChecked())
+            {
+                if (FlashPlayer->isBattleHappens())
+                {
+                    button->setChecked(false);
+                    return;
+                }
+                RightClickerWindow.reset(
+                        new Gui::ClickerWindow(FlashPlayer->getFlashHwnd(),
+                                TO::GetRightClickerWindowRect(FlashPlayer->getSize()),
+                                RightPlayButton.get()));
+                if (Clicker.get() == NULL)
+                {
+                    Clicker.reset(new ClickerThread(MainWindow));
+                    Clicker->start();
+                }
+            }
+            Clicker->setRightClicker(button->getChecked());
+            if (!Clicker->isBusy())
+            {
+                Clicker.reset();
+            }
         }
-      }
-      Clicker->SetRightClicker(button->GetChecked());
-      if (!Clicker->IsBusy())
-      {
-        Clicker.reset();
-      }
     }
-  }
-  else if (button == GetUrlButton.get())
-  {
-    if (FlashPlayer.get() != NULL)
+    else if (button == GetUrlButton.get())
     {
-      const tstring url = FlashPlayer->GetBattleUrl();
-      if (!url.empty())
-      {
-        Clipboard->Write(url);
-      }
-    }
-  }
-  else if (button == OpenUrlButton.get())
-  {
-    const tstring url = BattleUrl->ToMyUrl(Clipboard->Read());
-    if (BattleUrl->IsValidUrl(url))
-    {
-      const unsigned serverNumber = BattleUrl->ExtractServerNumber(url);
-      if (serverNumber < TO::GetNumberOfServers())
-      {
-        if (PrevButton != NULL)
+        if (FlashPlayer.get() != NULL)
         {
-          PrevButton->SetChecked(false);
+            const tstring url = FlashPlayer->getBattleUrl();
+            if (!url.empty())
+            {
+                Clipboard->write(url);
+            }
+        }
+    }
+    else if (button == OpenUrlButton.get())
+    {
+        const tstring url = BattleUrl->toMyUrl(Clipboard->read());
+        if (BattleUrl->isValidUrl(url))
+        {
+            const unsigned serverNumber = BattleUrl->extractServerNumber(url);
+            if (serverNumber < TO::GetNumberOfServers())
+            {
+                if (PrevButton != NULL)
+                {
+                    PrevButton->setChecked(false);
+                }
+
+                PrevButton = ServerButtons[serverNumber - 1];
+                PrevButton->setChecked(true);
+
+                LoadUrl(url);
+            }
+        }
+    }
+    else
+    {
+        if (button != PrevButton)
+        {
+            if (PrevButton != NULL)
+            {
+                PrevButton->setChecked(false);
+            }
+            button->setChecked(true);
+            PrevButton = button;
         }
 
-        PrevButton = ServerButtons[serverNumber - 1];
-        PrevButton->SetChecked(true);
-
-        LoadUrl(url);
-      }
+        const int serverNumber = button->getId();
+        LoadUrl(BattleUrl->getServerLink(serverNumber));
     }
-  }
-  else
-  {
-    if (button != PrevButton)
-    {
-      if (PrevButton != NULL)
-      {
-        PrevButton->SetChecked(false);
-      }
-      button->SetChecked(true);
-      PrevButton = button;
-    }
-
-    const int serverNumber = button->GetId();
-    LoadUrl(BattleUrl->GetServerLink(serverNumber));
-  }
 }
 
 //-----------------------------------------------------------------------------
 
 void CreateServerButtons()
 {
-  if (TO::GetNumberOfServers() > ServerButtons.size())
-  {
-    const LONG buttonHeight = 20;
-    const POINT pt = {0, 0};
-    const SIZE size = {0, buttonHeight};
-    for (unsigned i = ServerButtons.size(); i < TO::GetNumberOfServers(); ++i)
+    if (TO::GetNumberOfServers() > ServerButtons.size())
     {
-      TCHAR caption[8];
-      ::wsprintf(caption, TEXT("%d"), i + 1);
-      ServerButtons.push_back(new Gui::Button(MainWindow, MakeRECT(pt, size), caption, i + 1, false));
+        const LONG buttonHeight = 20;
+        const POINT pt =
+        { 0, 0 };
+        const SIZE size =
+        { 0, buttonHeight };
+        for (unsigned i = ServerButtons.size(); i < TO::GetNumberOfServers(); ++i)
+        {
+            TCHAR caption[8];
+            ::wsprintf(caption, TEXT("%d"), i + 1);
+            ServerButtons.push_back(
+                    new Gui::Button(MainWindow, MakeRECT(pt, size), caption, i + 1, false));
+        }
     }
-  }
-  else if (TO::GetNumberOfServers() < ServerButtons.size())
-  {
-    do
+    else if (TO::GetNumberOfServers() < ServerButtons.size())
     {
-      delete ServerButtons.back();
-      ServerButtons.pop_back();
+        do
+        {
+            delete ServerButtons.back();
+            ServerButtons.pop_back();
+        }
+        while (TO::GetNumberOfServers() < ServerButtons.size());
     }
-    while (TO::GetNumberOfServers() < ServerButtons.size());
-  }
-  else
-  {
-    return;
-  }
+    else
+    {
+        return;
+    }
 
-  UpdateWidgetPositions();
+    UpdateWidgetPositions();
 }
 
 //-----------------------------------------------------------------------------
 
 bool CreateGuiControls(const HWND parentWindow)
 {
-  const LONG buttonHeight = 20;
-  const POINT pt = {0, 0};
-  const SIZE size = {0, buttonHeight};
+    const LONG buttonHeight = 20;
+    const POINT pt =
+    { 0, 0 };
+    const SIZE size =
+    { 0, buttonHeight };
 
-  GetUrlButton.reset(new Gui::Button(parentWindow, MakeRECT(MakePOINT(5, 5), size), GetString(IDS_GET_URL_BUTTON).c_str(), 1000));
-  GetUrlButton->SetEnabled(false);
+    GetUrlButton.reset(
+            new Gui::Button(parentWindow, MakeRECT(MakePOINT(5, 5), size),
+                    GetString(IDS_GET_URL_BUTTON).c_str(), 1000));
+    GetUrlButton->setEnabled(false);
 
-  OpenUrlButton.reset(new Gui::Button(parentWindow,
-                                      MakeRECT(MakePOINT(5 + GetUrlButton->GetSize().cx + 2, 5), size),
-                                      GetString(IDS_OPEN_URL_BUTTON).c_str(),
-                                      1001));
-  OpenUrlButton->SetEnabled(Flash::IsAccountExists());
+    OpenUrlButton.reset(
+            new Gui::Button(parentWindow,
+                    MakeRECT(MakePOINT(5 + GetUrlButton->getSize().cx + 2, 5), size),
+                    GetString(IDS_OPEN_URL_BUTTON).c_str(), 1001));
+    OpenUrlButton->setEnabled(Flash::IsAccountExists());
 
-  LeftPlayButton.reset(new Gui::Button(parentWindow, MakeRECT(pt, size), GetString(IDS_LEFT_CLICKER_BUTTON).c_str(), 1003, true));
-  LeftPlayButton->SetEnabled(false);
-  RightPlayButton.reset(new Gui::Button(parentWindow, MakeRECT(pt, size), GetString(IDS_RIGHT_CLICKER_BUTTON).c_str(), 1004, true));
-  RightPlayButton->SetEnabled(false);
-  FullScreenButton.reset(new Gui::Button(parentWindow, MakeRECT(pt, MakeSIZE(20, buttonHeight)), TEXT("+"), 1005, true));
+    LeftPlayButton.reset(
+            new Gui::Button(parentWindow, MakeRECT(pt, size),
+                    GetString(IDS_LEFT_CLICKER_BUTTON).c_str(), 1003, true));
+    LeftPlayButton->setEnabled(false);
+    RightPlayButton.reset(
+            new Gui::Button(parentWindow, MakeRECT(pt, size),
+                    GetString(IDS_RIGHT_CLICKER_BUTTON).c_str(), 1004, true));
+    RightPlayButton->setEnabled(false);
+    FullScreenButton.reset(
+            new Gui::Button(parentWindow, MakeRECT(pt, MakeSIZE(20, buttonHeight)), TEXT("+"), 1005,
+                    true));
 
-  CreateServerButtons();
+    CreateServerButtons();
 
-  AboutWindow.reset(new Gui::AboutWindow(parentWindow));
+    AboutWindow.reset(new Gui::AboutWindow(parentWindow));
 
-  UpdateWidgetPositions();
+    UpdateWidgetPositions();
 
-  return true;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
 void ShowAboutBattleStarted()
 {
-  if (::GetForegroundWindow() != MainWindow)
-  {
-    ::PlaySound(MAKEINTRESOURCE(IDR_BEEPWAVE), NULL, SND_RESOURCE | SND_ASYNC | SND_LOOP);
-    ::MessageBox(MainWindow, GetString(IDS_BATTLE_IS_LOADED).c_str(), ProgramTitle, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL | MB_TOPMOST);
-    ::PlaySound(NULL, NULL, 0);
-  }
+    if (::GetForegroundWindow() != MainWindow)
+    {
+        ::PlaySound(MAKEINTRESOURCE(IDR_BEEPWAVE), NULL, SND_RESOURCE | SND_ASYNC | SND_LOOP);
+        ::MessageBox(MainWindow, GetString(IDS_BATTLE_IS_LOADED).c_str(), ProgramTitle,
+                MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL | MB_TOPMOST);
+        ::PlaySound(NULL, NULL, 0);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-  switch (message)
-  {
-  case WM_COMMAND:
+    switch (message)
     {
-      OnButtonClicked(reinterpret_cast<Gui::Button*>(lParam));
-      return 0;
-    }
-  case WM_GETMINMAXINFO:
-    {
-      MINMAXINFO*const info = (MINMAXINFO*)(lParam);
-      info->ptMinTrackSize = GetMinSizeOfMainWindow();
-      return 0;
-    }
-  case WM_SIZE:
-    {
-      UpdateWidgetPositions();
-      //return 0;
-    }
-  case WM_MOVE:
-    {
-      if (GetSettings()->WindowState == 0)
-      {
-        GetSettings()->SaveCurrentWindowRect(MainWindow);
-      }
-      return 0;
-    }
-  case WM_SYSCOMMAND:
-    {
-      switch (wParam & 0xFFF0)  // in low 4 bits receives extended information
-      {
-      case SC_MAXIMIZE:
-        GetSettings()->WindowState |= 0x1;
-        break;
-      case SC_RESTORE:
-        GetSettings()->WindowState &= ~0x1;
-        break;
-      }
-      return ::DefWindowProc(hwnd, message, wParam, lParam);
-    }
-  case WM_CHANGECBCHAIN:
-    {
-      return Clipboard->Do_WM_CHANGECBCHAIN(hwnd, message, wParam, lParam);
-    }
-  case WM_DRAWCLIPBOARD:
-    {
-      const tstring myUrl(Clipboard->Read());
-      const tstring publicUrl(BattleUrl->ToPublicUrl(myUrl));
-      if (myUrl != publicUrl)
-      {
-        Clipboard->Write(publicUrl);
-      }
-      return Clipboard->Do_WM_DRAWCLIPBOARD(hwnd, message, wParam, lParam);
-    }
-  case Thread::WM_THREADFINISH:
-    {
-      if (reinterpret_cast<ClickerThread *>(wParam) == Clicker.get())
-      {
-        LeftPlayButton->SetChecked(false);
-        RightPlayButton->SetChecked(false);
-        LeftClickerWindow.reset();
-        RightClickerWindow.reset();
-        Clicker.reset();
-        if (BattleIsStarted)
+        case WM_COMMAND:
         {
-          BattleIsStarted = false;
-          ShowAboutBattleStarted();
+            OnButtonClicked(reinterpret_cast<Gui::Button*>(lParam));
+            return 0;
         }
-      }
-      else
-      {
-        Screenshot.reset();
-      }
-      return 0;
+        case WM_GETMINMAXINFO:
+        {
+            MINMAXINFO* const info = (MINMAXINFO*)(lParam);
+            info->ptMinTrackSize = GetMinSizeOfMainWindow();
+            return 0;
+        }
+        case WM_SIZE:
+        {
+            UpdateWidgetPositions();
+            //return 0;
+        }
+        case WM_MOVE:
+        {
+            if (GetSettings()->windowState == 0)
+            {
+                GetSettings()->saveCurrentWindowRect(MainWindow);
+            }
+            return 0;
+        }
+        case WM_SYSCOMMAND:
+        {
+            switch (wParam & 0xFFF0)
+            // in low 4 bits receives extended information
+            {
+                case SC_MAXIMIZE:
+                    GetSettings()->windowState |= 0x1;
+                    break;
+                case SC_RESTORE:
+                    GetSettings()->windowState &= ~0x1;
+                    break;
+            }
+            return ::DefWindowProc(hwnd, message, wParam, lParam);
+        }
+        case WM_CHANGECBCHAIN:
+        {
+            return Clipboard->do_WM_CHANGECBCHAIN(hwnd, message, wParam, lParam);
+        }
+        case WM_DRAWCLIPBOARD:
+        {
+            const tstring myUrl(Clipboard->read());
+            const tstring publicUrl(BattleUrl->toPublicUrl(myUrl));
+            if (myUrl != publicUrl)
+            {
+                Clipboard->write(publicUrl);
+            }
+            return Clipboard->do_WM_DRAWCLIPBOARD(hwnd, message, wParam, lParam);
+        }
+        case Thread::WM_THREADFINISH:
+        {
+            if (reinterpret_cast<ClickerThread *>(wParam) == Clicker.get())
+            {
+                LeftPlayButton->setChecked(false);
+                RightPlayButton->setChecked(false);
+                LeftClickerWindow.reset();
+                RightClickerWindow.reset();
+                Clicker.reset();
+                if (BattleIsStarted)
+                {
+                    BattleIsStarted = false;
+                    ShowAboutBattleStarted();
+                }
+            }
+            else
+            {
+                Screenshot.reset();
+            }
+            return 0;
+        }
+        case BrowserEvent::WM_BROWSEREVENT:
+        {
+            std::auto_ptr<tstring> url((tstring*)(lParam));
+            if (DISPID_NAVIGATEERROR == wParam
+                    || url->compare(
+                            TEXT("http://") + GetSettings()->account + TEXT(".tankionline.com/"))
+                            == 0) // FIXME: Wtf?
+            {
+                LoadUrl();
+            }
+            return 0;
+        }
+        case WM_CREATE:
+        {
+            MainWindow = hwnd;
+            if (!CreateGuiControls(MainWindow))
+            {
+                return -1;
+            }
+            Clipboard.reset(new ClipboardManager(MainWindow));
+            Clipboard->hookChanges();
+            return 0;
+        }
+        case WM_DESTROY:
+        {
+            GetSettings()->save(); // For save window position
+            Clipboard.reset();
+            ::PostQuitMessage(0);
+            return 0;
+        }
     }
-  case BrowserEvent::WM_BROWSEREVENT:
-    {
-      std::auto_ptr<tstring> url((tstring*)(lParam));
-      if (DISPID_NAVIGATEERROR == wParam
-          || url->compare(TEXT("http://") + GetSettings()->Account + TEXT(".tankionline.com/")) == 0) // FIXME: Wtf?
-      {
-        LoadUrl();
-      }
-      return 0;
-    }
-  case WM_CREATE:
-    {
-      MainWindow = hwnd;
-      if (!CreateGuiControls(MainWindow))
-      {
-        return -1;
-      }
-      Clipboard.reset(new ClipboardManager(MainWindow));
-      Clipboard->HookChanges();
-      return 0;
-    }
-  case WM_DESTROY:
-    {
-      GetSettings()->Save(); // For save window position
-      Clipboard.reset();
-      ::PostQuitMessage(0);
-      return 0;
-    }
-  }
-  return ::DefWindowProc(hwnd, message, wParam, lParam);
+    return ::DefWindowProc(hwnd, message, wParam, lParam);
 }
 
 //-----------------------------------------------------------------------------

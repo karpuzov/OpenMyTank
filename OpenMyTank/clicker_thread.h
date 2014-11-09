@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -19,75 +18,73 @@ class ClickerThread : public Thread
 {
 public:
 
-  ClickerThread(const HWND parentHwnd)
-    : Thread(parentHwnd)
-    , LeftClicking(false)
-    , RightClicking(false)
-  {
-  }
-
-  ~ClickerThread()
-  {
-  }
-
-  void SetLeftClicker(const bool enabled)
-  {
-    LeftClicking = enabled;
-  }
-
-  void SetRightClicker(const bool enabled)
-  {
-    RightClicking = enabled;
-  }
-
-  bool IsBusy() const
-  {
-    return bool(LeftClicking || RightClicking);
-  }
-
-  void Run()
-  {
-    BattleIsStarted = false;
-
-    while (Runned && (FlashPlayer->GetFlashHwnd() == NULL))
+    ClickerThread(const HWND parentHwnd)
+            : Thread(parentHwnd), leftClicking(false), rightClicking(false)
     {
-      ::Sleep(50);
     }
 
-    while (Runned && !(LeftClicking || RightClicking))
+    ~ClickerThread()
     {
-      ::Sleep(50);
     }
 
-    int i = 0;
-    while (Runned)
+    void setLeftClicker(const bool enabled)
     {
-      if (LeftClicking)
-      {
-        FlashPlayer->ClickLeftPlayButton();
-      }
-      if (RightClicking)
-      {
-        FlashPlayer->ClickRightPlayButton();
-      }
+        leftClicking = enabled;
+    }
 
-      if (i++ % 1000 == 0)
-      {
-        if (FlashPlayer->IsBattleHappens())
+    void setRightClicker(const bool enabled)
+    {
+        rightClicking = enabled;
+    }
+
+    bool isBusy() const
+    {
+        return bool(leftClicking || rightClicking);
+    }
+
+    void run()
+    {
+        BattleIsStarted = false;
+
+        while (runned && (FlashPlayer->getFlashHwnd() == NULL))
         {
-          BattleIsStarted = true;
-          break;
+            ::Sleep(50);
         }
-      }
 
-      ::Sleep(GetSettings()->ClickersDelay);
+        while (runned && !(leftClicking || rightClicking))
+        {
+            ::Sleep(50);
+        }
+
+        int i = 0;
+        while (runned)
+        {
+            if (leftClicking)
+            {
+                FlashPlayer->clickLeftPlayButton();
+            }
+            if (rightClicking)
+            {
+                FlashPlayer->clickRightPlayButton();
+            }
+
+            if (i++ % 1000 == 0)
+            {
+                if (FlashPlayer->isBattleHappens())
+                {
+                    BattleIsStarted = true;
+                    break;
+                }
+            }
+
+            ::Sleep(GetSettings()->clickersDelay);
+        }
     }
-  }
 
 private:
 
-  bool LeftClicking;
-  bool RightClicking;
+    bool leftClicking;
+    bool rightClicking;
 };
 
 //-----------------------------------------------------------------------------

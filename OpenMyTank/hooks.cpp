@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #include "hooks.h"
@@ -18,125 +17,121 @@ void SaveScreenshot();
 extern ChatWriter* GlobalChatWriter; // may be NULL, when flash window not exists
 extern SHORT GlobalSnapshotKey; // controlled from module 'flash.cpp'
 
-HHOOK KeyboardHook::Hook = NULL;
+HHOOK KeyboardHook::hook = NULL;
 
 //-----------------------------------------------------------------------------
 
 KeyboardHook::KeyboardHook()
 {
-  if (Hook == NULL)
-  {
-    Hook = ::SetWindowsHookEx(WH_KEYBOARD,
-                              (HOOKPROC)(KeyboardHook::HookProcedure),
-                              NULL,
-                              ::GetCurrentThreadId());
-  }
+    if (hook == NULL)
+    {
+        hook = ::SetWindowsHookEx(WH_KEYBOARD, (HOOKPROC)(KeyboardHook::hookProcedure),
+        NULL, ::GetCurrentThreadId());
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 KeyboardHook::~KeyboardHook()
 {
-  if (Hook != NULL)
-  {
-    ::UnhookWindowsHookEx(Hook);
-    Hook = NULL;
-  }
+    if (hook != NULL)
+    {
+        ::UnhookWindowsHookEx(hook);
+        hook = NULL;
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 LRESULT CALLBACK
-KeyboardHook::HookProcedure(int code, WPARAM wParam, LPARAM lParam)
+KeyboardHook::hookProcedure(int code, WPARAM wParam, LPARAM lParam)
 {
-  if (code == HC_ACTION)
-  {
-    // lParam: 0??????? - down event
-    // lParam: 4??????? - pressing events
-    // lParam: C??????? - up event
-
-    if (VK_F1 <= wParam && wParam <= VK_F12)
+    if (code == HC_ACTION)
     {
-      if ((lParam & ((KF_REPEAT + KF_UP) << 16)) == 0)
-      {
-        if (wParam == VK_F11)
+        // lParam: 0??????? - down event
+        // lParam: 4??????? - pressing events
+        // lParam: C??????? - up event
+
+        if (VK_F1 <= wParam && wParam <= VK_F12)
         {
-          ToggleFullScreenMode();
+            if ((lParam & ((KF_REPEAT + KF_UP) << 16)) == 0)
+            {
+                if (wParam == VK_F11)
+                {
+                    ToggleFullScreenMode();
+                }
+                else if (wParam == VK_F12)
+                {
+                    ToggleMenuVisible();
+                }
+                else
+                {
+                    if (GlobalChatWriter != NULL)
+                    {
+                        GlobalChatWriter->dispatchKeyboardMessage(wParam, lParam);
+                    }
+                }
+            }
+            return 1; // ignore this key
         }
-        else if (wParam == VK_F12)
+
+        if (wParam == GlobalSnapshotKey)
         {
-          ToggleMenuVisible();
+            // Key VK_SNAPSHOT send only one message: wParam: 2C, lParam: C1370001 !
+            SaveScreenshot(); // reenterant
+            return 1; // ignore this key
         }
-        else
-        {
-          if (GlobalChatWriter != NULL)
-          {
-            GlobalChatWriter->DispatchKeyboardMessage(wParam, lParam);
-          }
-        }
-      }
-      return 1; // ignore this key
     }
 
-    if (wParam == GlobalSnapshotKey)
-    {
-      // Key VK_SNAPSHOT send only one message: wParam: 2C, lParam: C1370001 !
-      SaveScreenshot(); // reenterant
-      return 1; // ignore this key
-    }
-  }
-
-  return ::CallNextHookEx(Hook, code, wParam, lParam);
+    return ::CallNextHookEx(hook, code, wParam, lParam);
 }
 
 //-----------------------------------------------------------------------------
 //    MouseHook
 //-----------------------------------------------------------------------------
 
-HHOOK MouseHook::Hook = NULL;
+HHOOK MouseHook::hook = NULL;
 
 //-----------------------------------------------------------------------------
 
 MouseHook::MouseHook()
 {
-  if (Hook == NULL)
-  {
-    Hook = ::SetWindowsHookEx(WH_MOUSE,
-                              (HOOKPROC)(MouseHook::HookProcedure),
-                              NULL,
-                              ::GetCurrentThreadId());
-  }
+    if (hook == NULL)
+    {
+        hook = ::SetWindowsHookEx(WH_MOUSE, (HOOKPROC)(MouseHook::hookProcedure),
+        NULL, ::GetCurrentThreadId());
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 MouseHook::~MouseHook()
 {
-  if (Hook != NULL)
-  {
-    ::UnhookWindowsHookEx(Hook);
-    Hook = NULL;
-  }
+    if (hook != NULL)
+    {
+        ::UnhookWindowsHookEx(hook);
+        hook = NULL;
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 LRESULT CALLBACK
-MouseHook::HookProcedure(int code, WPARAM wParam, LPARAM lParam)
+MouseHook::hookProcedure(int code, WPARAM wParam, LPARAM lParam)
 {
-  if (code == HC_ACTION)
-  {
-    if (wParam == WM_LBUTTONDOWN)
+    if (code == HC_ACTION)
     {
-      const MOUSEHOOKSTRUCT* info = reinterpret_cast<const MOUSEHOOKSTRUCT*>(lParam);
-      if (info->pt.y == 0)
-      {
-        ToggleMenuVisible();
-      }
+        if (wParam == WM_LBUTTONDOWN)
+        {
+            const MOUSEHOOKSTRUCT* info = reinterpret_cast<const MOUSEHOOKSTRUCT*>(lParam);
+            if (info->pt.y == 0)
+            {
+                ToggleMenuVisible();
+            }
+        }
     }
-  }
 
-  return ::CallNextHookEx(Hook, code, wParam, lParam);
+    return ::CallNextHookEx(hook, code, wParam, lParam);
 }
 
 //-----------------------------------------------------------------------------

@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #include "thread.h"
@@ -8,94 +7,88 @@
 //-----------------------------------------------------------------------------
 
 Thread::Thread(const HWND parent)
-  : ParentHwnd(parent)
-  , Runned(false)
-  , ThreadId(0)
+        : parentHwnd(parent), runned(false), threadId(0)
 {
-  ThreadHandle = (HANDLE)::_beginthreadex(NULL,
-                                          0,
-                                          Thread::ThreadLoop,
-                                          static_cast<void*>(this),
-                                          CREATE_SUSPENDED,
-                                          reinterpret_cast<unsigned int*>(&ThreadId));
-  if (ThreadHandle == 0)
-  {
-    //throw;
-  }
+    threadHandle = (HANDLE)::_beginthreadex(NULL, 0, Thread::threadLoop, static_cast<void*>(this),
+    CREATE_SUSPENDED, reinterpret_cast<unsigned int*>(&threadId));
+    if (threadHandle == 0)
+    {
+        //throw;
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 Thread::~Thread()
 {
-  Exit();
-  ::CloseHandle(ThreadHandle);
+    exit();
+    ::CloseHandle(threadHandle);
 }
 
 //-----------------------------------------------------------------------------
 
 void
-Thread::Start()
+Thread::start()
 {
-  if (!Runned)
-  {
-    Runned = true;
-    ::ResumeThread(ThreadHandle);
-  }
+    if (!runned)
+    {
+        runned = true;
+        ::ResumeThread(threadHandle);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 void
-Thread::Exec()
+Thread::exec()
 {
-  MSG msg;
-  while (Runned && ::GetMessage(&msg, NULL, 0, 0))
-  {
-    ::TranslateMessage(&msg);
-    ::DispatchMessage(&msg);
-  }
+    MSG msg;
+    while (runned && ::GetMessage(&msg, NULL, 0, 0))
+    {
+        ::TranslateMessage(&msg);
+        ::DispatchMessage(&msg);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 bool
-Thread::Exit(const DWORD msecs)
+Thread::exit(const DWORD msecs)
 {
-  if (Runned)
-  {
-    Runned = false;
-    ::PostThreadMessage(this->GetThreadId(), WM_QUIT, 0, 0);
-    return bool(::WaitForSingleObject(ThreadHandle, msecs) == WAIT_OBJECT_0);
-  }
-  return true;
+    if (runned)
+    {
+        runned = false;
+        ::PostThreadMessage(this->getThreadId(), WM_QUIT, 0, 0);
+        return bool(::WaitForSingleObject(threadHandle, msecs) == WAIT_OBJECT_0);
+    }
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
 DWORD
-Thread::GetThreadId() const
+Thread::getThreadId() const
 {
-  return ThreadId;
+    return threadId;
 }
 
 //-----------------------------------------------------------------------------
 
 unsigned __stdcall
-Thread::ThreadLoop(void* thisThread)
+Thread::threadLoop(void* thisThread)
 {
-  //MSG msg;  PeekMessage(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE); - creating message loop?
+    //MSG msg;  PeekMessage(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE); - creating message loop?
 
-  Thread*const threadObject = static_cast<Thread*>(thisThread);
-  threadObject->Run();
+    Thread* const threadObject = static_cast<Thread*>(thisThread);
+    threadObject->run();
 
-  if (threadObject->ParentHwnd != NULL)
-  {
-    ::PostMessage(threadObject->ParentHwnd, Thread::WM_THREADFINISH, (WPARAM)(threadObject), (LPARAM)(threadObject->ThreadId));
-  }
+    if (threadObject->parentHwnd != NULL)
+    {
+        ::PostMessage(threadObject->parentHwnd, Thread::WM_THREADFINISH, (WPARAM)(threadObject), (LPARAM)(threadObject->threadId));
+    }
 
-  ::_endthreadex(0);
-  return 0;
+    ::_endthreadex(0);
+    return 0;
 }
 
 //-----------------------------------------------------------------------------

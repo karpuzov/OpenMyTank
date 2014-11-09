@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -27,47 +26,47 @@ class PlayerWindow
 {
 public:
 
-  PlayerWindow(CONST HWND parentWindow, CONST TCHAR url[]);
-  ~PlayerWindow();
+    PlayerWindow(CONST HWND parentWindow, CONST TCHAR url[]);
+    ~PlayerWindow();
 
-  HWND GetFlashHwnd() const;
+    HWND getFlashHwnd() const;
 
-  void MoveWindow(CONST RECT& rect);
+    void moveWindow(CONST RECT& rect);
 
-  SIZE GetSize() const;
+    SIZE getSize() const;
 
-  tstring GetBattleUrl() const;
+    tstring getBattleUrl() const;
 
-  void ClickLeftPlayButton() const;
-  void ClickRightPlayButton() const;
+    void clickLeftPlayButton() const;
+    void clickRightPlayButton() const;
 
-  bool IsBattleHappens() const;
+    bool isBattleHappens() const;
 
 private:
 
-  std::auto_ptr<WebBrowser>  Browser;
+    std::auto_ptr<WebBrowser> browser;
 
-  HWND AtlWindow;
-  HWND FlashHwnd;
-  int RemainTimerIterations;
+    HWND atlWindow;
+    HWND flashHwnd;
+    int remainTimerIterations;
 
-  SIZE WindowSize;
+    SIZE windowSize;
 
-  ChatWriter* CurrentChatWriter;
+    ChatWriter* currentChatWriter;
 
-  void ReleaseAll();
+    void releaseAll();
 
-  UINT GetInitialTimerId() const;
-  static void CALLBACK InitialTimerProc(HWND hwnd, UINT message, UINT thisPointer, DWORD time);
+    UINT getInitialTimerId() const;
+    static void CALLBACK initialTimerProc(HWND hwnd, UINT message, UINT thisPointer, DWORD time);
 
-  void SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
-  void PostMessage(UINT message, WPARAM wParam, LPARAM lParam);
+    void sendMessage(UINT message, WPARAM wParam, LPARAM lParam);
+    void postMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
-  void ActivateWindow(CONST HWND activateWindow = NULL) const;
+    void activateWindow(CONST HWND activateWindow = NULL) const;
 };
 
 //-----------------------------------------------------------------------------
 
-} // namespace Flash
+}// namespace Flash
 
 //-----------------------------------------------------------------------------

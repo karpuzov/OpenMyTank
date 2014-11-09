@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -13,14 +12,14 @@ class KeyboardHook
 {
 public:
 
-  KeyboardHook();
-  ~KeyboardHook();
+    KeyboardHook();
+    ~KeyboardHook();
 
 private:
 
-  static HHOOK Hook;
+    static HHOOK hook;
 
-  static LRESULT CALLBACK HookProcedure(int code, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK hookProcedure(int code, WPARAM wParam, LPARAM lParam);
 };
 
 //-----------------------------------------------------------------------------
@@ -29,14 +28,14 @@ class MouseHook
 {
 public:
 
-  MouseHook();
-  ~MouseHook();
+    MouseHook();
+    ~MouseHook();
 
 private:
 
-  static HHOOK Hook;
+    static HHOOK hook;
 
-  static LRESULT CALLBACK HookProcedure(int code, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK hookProcedure(int code, WPARAM wParam, LPARAM lParam);
 };
 
 //-----------------------------------------------------------------------------

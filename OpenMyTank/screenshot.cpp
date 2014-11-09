@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------------------
 
 #include "screenshot.h"
@@ -16,167 +15,153 @@
 
 bool GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 {
-  using namespace Gdiplus;
+    using namespace Gdiplus;
 
-  bool ok = false;
+    bool ok = false;
 
-  UINT  num = 0;          // number of image encoders
-  UINT  size = 0;         // size of the image encoder array in bytes
-  GetImageEncodersSize(&num, &size);
-  if (size != 0)
-  {
-    ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-    if (pImageCodecInfo != NULL)
+    UINT num = 0;          // number of image encoders
+    UINT size = 0;         // size of the image encoder array in bytes
+    GetImageEncodersSize(&num, &size);
+    if (size != 0)
     {
-      GetImageEncoders(num, size, pImageCodecInfo);
-
-      for (UINT j = 0; j < num && !ok; ++j)
-      {
-        if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+        ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+        if (pImageCodecInfo != NULL)
         {
-          *pClsid = pImageCodecInfo[j].Clsid;
-          ok = true;
+            GetImageEncoders(num, size, pImageCodecInfo);
+
+            for (UINT j = 0; j < num && !ok; ++j)
+            {
+                if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+                {
+                    *pClsid = pImageCodecInfo[j].Clsid;
+                    ok = true;
+                }
+            }
+
+            free(pImageCodecInfo);
         }
-      }
-
-      free(pImageCodecInfo);
     }
-  }
 
-  return ok;
+    return ok;
 }
 
 //-----------------------------------------------------------------------------
 
 const CLSID* GetConstClsid(const WCHAR* format)
 {
-  static CLSID clsid;
-  static std::basic_string<WCHAR> lastFormatString;
+    static CLSID clsid;
+    static std::basic_string<WCHAR> lastFormatString;
 
-  std::basic_string<WCHAR> formatString(TEXT("image/"));
-  formatString.append(format);
+    std::basic_string<WCHAR> formatString(TEXT("image/"));
+    formatString.append(format);
 
-  if (lastFormatString != formatString)
-  {
-    GetEncoderClsid(formatString.c_str(), &clsid);
-    lastFormatString = formatString;
-  }
+    if (lastFormatString != formatString)
+    {
+        GetEncoderClsid(formatString.c_str(), &clsid);
+        lastFormatString = formatString;
+    }
 
-  return &clsid;
+    return &clsid;
 }
 
 //-----------------------------------------------------------------------------
 
-Screenshoter::Screenshoter(const WCHAR* path,
-                           const TCHAR* dateFormat,
-                           const TCHAR* timeFormat,
-                           const WCHAR* format,
-                           const LONG jpegQuality,
-                           const bool beepOnSuccess)
-  : Path(path)
-  , DateFormat(dateFormat)
-  , TimeFormat(timeFormat)
-  , Format(format)
-  , JpegQuality(jpegQuality)
-  , JpegParameters(NULL)
-  , BeepOnSuccess(beepOnSuccess)
+Screenshoter::Screenshoter(
+    const WCHAR* path, const TCHAR* dateFormat, const TCHAR* timeFormat, const WCHAR* format,
+    const LONG jpegQuality, const bool beepOnSuccess)
+        : path(path), dateFormat(dateFormat), timeFormat(timeFormat), format(format),
+            jpegQuality(jpegQuality), jpegParameters(NULL), beepOnSuccess(beepOnSuccess)
 {
-  Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-  Gdiplus::GdiplusStartup(&GdiplusToken, &gdiplusStartupInput, NULL);
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-  wcscpy_s(FileName, sizeof(FileName) / sizeof(FileName[0]), Path);
-  ::PathAddBackslash(FileName);
-  DateStart = FileName + wcslen(FileName);
+    wcscpy_s(fileName, sizeof(fileName) / sizeof(fileName[0]), path);
+    ::PathAddBackslash(fileName);
+    dateStart = fileName + wcslen(fileName);
 
-  if (format[0] == L'j' && format[1] == L'p') // "jpg" or "jpeg"
-  {
-    JpegParameters = new Gdiplus::EncoderParameters;
-    JpegParameters->Count = 1;
-    JpegParameters->Parameter[0].Guid = Gdiplus::EncoderQuality;
-    JpegParameters->Parameter[0].Type = Gdiplus::EncoderParameterValueTypeLong;
-    JpegParameters->Parameter[0].NumberOfValues = 1;
-    JpegParameters->Parameter[0].Value = (VOID*)(&JpegQuality);
-  }
+    if (format[0] == L'j' && format[1] == L'p') // "jpg" or "jpeg"
+    {
+        jpegParameters = new Gdiplus::EncoderParameters;
+        jpegParameters->Count = 1;
+        jpegParameters->Parameter[0].Guid = Gdiplus::EncoderQuality;
+        jpegParameters->Parameter[0].Type = Gdiplus::EncoderParameterValueTypeLong;
+        jpegParameters->Parameter[0].NumberOfValues = 1;
+        jpegParameters->Parameter[0].Value = (VOID*)(&jpegQuality);
+    }
 }
 
 //-----------------------------------------------------------------------------
 
 Screenshoter::~Screenshoter()
 {
-  Gdiplus::GdiplusShutdown(GdiplusToken);
+    Gdiplus::GdiplusShutdown(gdiplusToken);
 
-  delete JpegParameters;
+    delete jpegParameters;
 }
 
 //-----------------------------------------------------------------------------
 
 bool
-Screenshoter::SaveScreen(const HWND window)
+Screenshoter::saveScreen(const HWND window)
 {
-  bool ok = false;
+    bool ok = false;
 
-  const HDC dc = ::GetDC(window);
-  RECT rect;
-  if (::GetWindowRect(window, &rect))
-  {
-    const int width = rect.right - rect.left;
-    const int height = rect.bottom - rect.top;
-
-    const HDC memDc = ::CreateCompatibleDC(dc);
-    const HBITMAP memBitmap = ::CreateCompatibleBitmap(dc, width, height);
-    const HBITMAP oldBitmap = (HBITMAP)::SelectObject(memDc, memBitmap);
-
-    ::BitBlt(memDc, 0, 0, width, height, dc, 0, 0, SRCCOPY);
-
+    const HDC dc = ::GetDC(window);
+    RECT rect;
+    if (::GetWindowRect(window, &rect))
     {
-      ::CreateDirectory(Path, NULL);
+        const int width = rect.right - rect.left;
+        const int height = rect.bottom - rect.top;
 
-      Gdiplus::Bitmap bitmap(memBitmap, NULL);
-      if (Gdiplus::Ok == bitmap.Save(MakeFileName(), GetConstClsid(Format), JpegParameters))
-      {
-        ok = true;
-      }
+        const HDC memDc = ::CreateCompatibleDC(dc);
+        const HBITMAP memBitmap = ::CreateCompatibleBitmap(dc, width, height);
+        const HBITMAP oldBitmap = (HBITMAP)::SelectObject(memDc, memBitmap);
+
+        ::BitBlt(memDc, 0, 0, width, height, dc, 0, 0, SRCCOPY);
+
+        {
+            ::CreateDirectory(path, NULL);
+
+            Gdiplus::Bitmap bitmap(memBitmap, NULL);
+            if (Gdiplus::Ok == bitmap.Save(makeFileName(), GetConstClsid(format), jpegParameters))
+            {
+                ok = true;
+            }
+        }
+
+        ::SelectObject(memDc, oldBitmap);
+        ::DeleteObject(memDc);
+        ::DeleteObject(memBitmap);
     }
+    ::ReleaseDC(window, dc);
 
-    ::SelectObject(memDc, oldBitmap);
-    ::DeleteObject(memDc);
-    ::DeleteObject(memBitmap);
-  }
-  ::ReleaseDC(window, dc);
-
-  if (BeepOnSuccess && ok)
-  {
-    ::PlaySound(MAKEINTRESOURCE(IDR_BEEPWAVE), NULL, SND_RESOURCE | SND_SYNC);
-  }
-  return ok;
+    if (beepOnSuccess && ok)
+    {
+        ::PlaySound(MAKEINTRESOURCE(IDR_BEEPWAVE), NULL, SND_RESOURCE | SND_SYNC);
+    }
+    return ok;
 }
 
 //-----------------------------------------------------------------------------
 
-WCHAR*const
-Screenshoter::MakeFileName()
+WCHAR* const
+Screenshoter::makeFileName()
 {
-  WCHAR* string = DateStart;
+    WCHAR* string = dateStart;
 
-  string += ::GetDateFormat(LOCALE_USER_DEFAULT,
-                            0,
-                            NULL,
-                            DateFormat,
-                            string,
-                            MAX_PATH - (string - FileName));
-  --string;
+    string += ::GetDateFormat(LOCALE_USER_DEFAULT, 0,
+    NULL, dateFormat, string,
+    MAX_PATH - (string - fileName));
+    --string;
 
-  string += ::GetTimeFormat(LOCALE_USER_DEFAULT,
-                            0,
-                            NULL,
-                            TimeFormat,
-                            string,
-                            MAX_PATH - (string - FileName));
-  --string;
+    string += ::GetTimeFormat(LOCALE_USER_DEFAULT, 0,
+    NULL, timeFormat, string,
+    MAX_PATH - (string - fileName));
+    --string;
 
-  wcscpy_s(string, MAX_PATH - (string - FileName), Format);
+    wcscpy_s(string, MAX_PATH - (string - fileName), format);
 
-  return FileName;
+    return fileName;
 }
 
 //-----------------------------------------------------------------------------
